@@ -1,0 +1,41 @@
+from dir_empm.dir_matlab_macros import * ;
+
+a_ = torch.zeros(12).to(dtype=torch.float32);
+na=0;
+a_[na] = 1.5; na=na+1;
+a_[na] = 9.5; na=na+1;
+a_[na] = 1.5; na=na+1;
+a_[na] = 9.5; na=na+1;
+a_[na] = 1.5; na=na+1;
+a_[na] = 9.5; na=na+1;
+a_[na] = 3.5; na=na+1;
+a_[na] = 1.5; na=na+1;
+a_[na] = 9.5; na=na+1;
+a_[na] = 3.5; na=na+1;
+a_[na] = 1.5; na=na+1;
+a_[na] = 3.5; na=na+1;
+b_ = torch.zeros(15).to(dtype=torch.float32);
+nb=0;
+b_[nb] = 4.5; nb=nb+1;
+b_[nb] = 4.5; nb=nb+1;
+b_[nb] = 7.5; nb=nb+1;
+b_[nb] = 9.5; nb=nb+1;
+b_[nb] = 4.5; nb=nb+1;
+b_[nb] = 7.5; nb=nb+1;
+b_[nb] = 9.5; nb=nb+1;
+b_[nb] = 7.5; nb=nb+1;
+b_[nb] = 4.5; nb=nb+1;
+b_[nb] = 9.5; nb=nb+1;
+b_[nb] = 3.5; nb=nb+1;
+b_[nb] = 7.5; nb=nb+1;
+b_[nb] = 9.5; nb=nb+1;
+b_[nb] = 3.5; nb=nb+1;
+b_[nb] = 7.5; nb=nb+1;
+
+print(f' %% a_: '); print(a_);
+print(f' %% b_: '); print(b_);
+cap_,index_na_from_ncap_,index_nb_from_ncap_ = intersect_0(a_,b_);
+print(f' %% cap_: '); print(cap_);
+print(f' %% index_na_from_ncap_: '); print(index_na_from_ncap_);
+print(f' %% index_nb_from_ncap_: '); print(index_nb_from_ncap_);
+

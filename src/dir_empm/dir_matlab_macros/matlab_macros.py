@@ -1,0 +1,55 @@
+#import os; os.chdir('/data/rangan/dir_cryoem/dir_rangan_python');
+import io ;
+import numpy as np ; pi = np.pi ; i = 1j ; import torch ; import timeit ;
+from scipy.sparse import csr_matrix ;
+from scipy.io import savemat ;
+from scipy.io import loadmat ;
+
+rng = lambda a : torch.manual_seed(a) ;
+cell = lambda n: [ [] for _ in range(n) ] ; #%<-- cell array. ;
+isempty = lambda t: (t is None) or (isinstance(t, torch.Tensor) and t.numel() == 0) ;
+numel_unique = lambda a : np.unique(a.numpy().ravel()).size ;
+numel = lambda a : int(a.numel()) ;
+cumsum_0 = lambda a : torch.cumsum(torch.concatenate((torch.tensor([0]),a)) , 0).to(torch.int32) ;
+fnorm = lambda a : torch.linalg.norm(a).item() ;
+ndims = lambda a : a.ndim ;
+size = lambda a , d : a.shape[ndims(a)-1-d] ;
+mtr = lambda a : tuple(reversed(a)) ; #<-- matlab-arranged size (i.e., tuple(reversed(...))). ;
+msr = lambda str : str[::-1] ; #<-- for einsum (i.e., string reversed (...)). ;
+mts = lambda a : tuple(len(a) - x - 1 for x in a) ; #<-- for permute (i.e., tuple subtract (...)). ;
+etumrep = lambda a : torch.permute(a,tuple(torch.arange(ndims(a)-1,-1,-1).tolist())) ; #<-- matlab-arranged permutation (for savemat). ;
+tic = lambda : timeit.default_timer() ;
+toc = lambda a : tic() - a ;
+mmmm = lambda A , B : torch.einsum( msr('ab') + ',' + msr('bc') + '->' + msr('ac') , A , B ) ; #<-- matlab matrix matrix multiplication. ;
+mmvm = lambda A , B : torch.einsum( msr('ab') + ',' +  msr('b') + '->' +  msr('a') , A , B ) ; #<-- matlab matrix vector multiplication. ;
+mvmm = lambda A , B : torch.einsum(  msr('b') + ',' + msr('bc') + '->' +  msr('c') , A , B ) ; #<-- matlab vector matrix multiplication. ;
+mvvm = lambda A , B : torch.einsum(  msr('b') + ',' +  msr('b') + '->' +   msr('') , A , B ) ; #<-- matlab vector vector multiplication. ;
+efind = lambda a : torch.where(a)[0] ;
+n_1 = int(1); n_2 = int(2); n_3 = int(3);
+n_byte_per_float32 = 4; n_byte_per_float64 = 8;
+n_byte_per_complex64 = 8; n_byte_per_complex128 = 16;
+np_sparse = lambda nr_,nc_,v_,n_r,n_c : csr_matrix( ( v_.numpy(),(nc_.numpy(),nr_.numpy()) ) , shape=(n_c,n_r) ) ; #<-- note matlab-arranged dimensions. ;
+m_npcsr_mm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(B.numpy().T).T),mtr((size(np_csr_A,0),size(B,1)))) ; #<-- note extra transposes to match matlab. ;
+m_npcsr_vm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(torch.reshape(B.ravel(),mtr((numel(B.ravel()),1))).numpy().T).T),mtr((size(np_csr_A,0),n_1))).ravel() ; #<-- note extra transposes to match matlab. ;
+
+from . matlab_index_2d_0 import matlab_index_2d_0 ;
+from . matlab_index_3d_0 import matlab_index_3d_0 ;
+from . matlab_index_4d_0 import matlab_index_4d_0 ;
+from . matlab_index_2d_gpu_0 import matlab_index_2d_gpu_0 ;
+from . matlab_index_3d_gpu_0 import matlab_index_3d_gpu_0 ;
+from . matlab_index_4d_gpu_0 import matlab_index_4d_gpu_0 ;
+from . matlab_scalar_round import matlab_scalar_round ;
+from . periodize import periodize ;
+from . disp_sprintf import disp ; from . disp_sprintf import sprintf ;
+from . fnorm_disp import fnorm_disp ;
+from . unique_0 import unique_0 ;
+from . intersect_0 import intersect_0 ;
+from . union_0 import union_0 ;
+from . setdiff_0 import setdiff_0 ;
+from . parameter_timing_update import parameter_timing_update ;
+from . parameter_timing_printf import parameter_timing_printf ;
+from . matlab_svds import matlab_svds ;
+from . matlab_save import matlab_save ;
+from . matlab_load import matlab_load ;
+
+

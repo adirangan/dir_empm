@@ -1,0 +1,50 @@
+[build-system]
+requires = ["uv_build>=0.9.15,<0.10.0"]
+build-backend="uv_build"
+
+[project]
+name = "dir_empm"
+version = "0.0.1"
+description = "tools for ab-initio reconstruction using entropy-maximization, radial-principal-mode compression, and translation-factorization"
+authors = [
+    { name = "Adi Rangan", email = "arangan@flatironinstitute.org" },
+]
+readme = "README.md"
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Operating System :: OS Independent",
+]
+requires-python = ">=3.14"
+dependencies = [
+    "numpy>=1.23.5",
+    "scipy",
+    "torch>=2.2.0",
+    "torchvision",
+    "finufft",
+    "cufinufft",
+    "pydantic",
+    "tqdm",
+    "matplotlib",
+]
+
+[dependency-groups]
+dev = [
+    "ipython>=9.8.0",
+    "pytest>=9.0.1",
+    "pytest-cov>=7.0.0"
+]
+
+
+[tool.mypy]
+plugins = ["numpy.typing.mypy_plugin"]
+
+[tool.coverage.run]
+branch = true
+source = ["src"]
+omit = ["test/*"]
+
+[tool.pytest.ini_options]
+addopts = "--ignore=test/dir_interaction_required --cov --cov-report xml --cov-report term-missing -rs"
+norecursedirs = "test/dir_helpers"
+pythonpath = ["test/dir_helpers"]
+tmp_path_retention_policy = "none"
