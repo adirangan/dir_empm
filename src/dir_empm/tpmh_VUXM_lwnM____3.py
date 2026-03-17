@@ -77,7 +77,8 @@ def tpmh_VUXM_lwnM____3(
         n_nw = numel(index_nw_centered_out_);
         tmp_i8_index_lhs_ = matlab_index_4d_0(n_UX_rank,':',n_w_max,index_nw_centered_out_,n_M,':',FTK['n_svd_l'],nl);
         tmp_i8_index_rhs_rwM_ = matlab_index_3d_0(n_k_p_r,':',n_w_max,index_nw_centered_0in_,n_M,':');
-        VUXM_centered_nwMl____.ravel()[tmp_i8_index_lhs_] = torch.reshape( mmmm( torch.reshape(V_UX_nrl___[nl,:,:],mtr((n_UX_rank,n_k_p_r))).to(dtype=torch.complex64) , torch.reshape(M_k_q_centered_rwM___.ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_nw*n_M))) ) / np.maximum(1,n_w_max) , mtr((n_UX_rank,n_nw,n_M)) ).to(dtype=torch.complex64).ravel();
+        #VUXM_centered_nwMl____.ravel()[tmp_i8_index_lhs_] = torch.reshape( mmmm( torch.reshape(V_UX_nrl___[nl,:,:],mtr((n_UX_rank,n_k_p_r))).to(dtype=torch.complex64) , torch.reshape(M_k_q_centered_rwM___.ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_nw*n_M))) ) / np.maximum(1,n_w_max) , mtr((n_UX_rank,n_nw,n_M)) ).to(dtype=torch.complex64).ravel();
+        VUXM_centered_nwMl____ = matlab_assign_lhs_from_rhs_(VUXM_centered_nwMl____,tmp_i8_index_lhs_, torch.reshape( mmmm( torch.reshape(V_UX_nrl___[nl,:,:],mtr((n_UX_rank,n_k_p_r))).to(dtype=torch.complex64) , torch.reshape(M_k_q_centered_rwM___.ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_nw*n_M))) ) / np.maximum(1,n_w_max) , mtr((n_UX_rank,n_nw,n_M)) ).to(dtype=torch.complex64).ravel());
     #end;%for nl=0:FTK['n_svd_l']-1;
     tmp_i8_index_rhs_nwMl_ = matlab_index_4d_0(n_UX_rank,':',n_w_max,index_nw_zerobased_from_centered_,n_M,':',FTK['n_svd_l'],':');
     VUXM_lwnM____ = torch.permute(torch.reshape(VUXM_centered_nwMl____.ravel()[tmp_i8_index_rhs_nwMl_],mtr((n_UX_rank,numel(index_nw_zerobased_from_centered_),n_M,FTK['n_svd_l']))),mtr(mts((3,1,0,2)))).to(dtype=torch.complex64);

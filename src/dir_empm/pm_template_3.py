@@ -203,9 +203,11 @@ def pm_template_3(
     y_lmwa____ = torch.reshape(torch.permute(y_jlm___,mtr(mts((1,2,0)))),mtr((1+l_max,1+l_max,n_w,n_viewing_polar_a)))/np.sqrt(4*pi);
     legendre_use_evaluate_normalized_lmwa____ = torch.zeros(mtr((1+l_max,n_m_max,n_w,n_viewing_polar_a))).to(dtype=torch.float32);
     tmp_i8_index_lhs_ = matlab_index_4d_0(1+l_max,':',n_m_max,l_max+torch.arange(0,+l_max+1,+1).to(dtype=torch.int32),n_w,':',n_viewing_polar_a,':');
-    legendre_use_evaluate_normalized_lmwa____.ravel()[tmp_i8_index_lhs_] = y_lmwa____.ravel();
+    #legendre_use_evaluate_normalized_lmwa____.ravel()[tmp_i8_index_lhs_] = y_lmwa____.ravel();
+    legendre_use_evaluate_normalized_lmwa____ = matlab_assign_lhs_from_rhs_(legendre_use_evaluate_normalized_lmwa____,tmp_i8_index_lhs_, y_lmwa____.ravel());
     tmp_i8_index_lhs_ = matlab_index_4d_0(1+l_max,':',n_m_max,l_max+torch.arange(0,-l_max-1,-1).to(dtype=torch.int32),n_w,':',n_viewing_polar_a,':');
-    legendre_use_evaluate_normalized_lmwa____.ravel()[tmp_i8_index_lhs_] = y_lmwa____.ravel();
+    #legendre_use_evaluate_normalized_lmwa____.ravel()[tmp_i8_index_lhs_] = y_lmwa____.ravel();
+    legendre_use_evaluate_normalized_lmwa____ = matlab_assign_lhs_from_rhs_(legendre_use_evaluate_normalized_lmwa____,tmp_i8_index_lhs_, y_lmwa____.ravel());
     tmp_t = toc(tmp_t);
     if (flag_verbose>1): disp(sprintf(' %% legendre_use_evaluate_normalize_lmwa____: %0.6fs',tmp_t)); #end;
     #%%%%%%%%;
@@ -226,7 +228,8 @@ def pm_template_3(
         index_m_out_ = l_max + torch.arange(-l_val,+l_val+1).to(dtype=torch.int32);
         tmp_i8_index_lhs_ = matlab_index_3d_0(1+l_max,l_val,n_m_max,index_m_out_,n_k,':');
         tmp_i8_index_rhs_ = matlab_index_2d_0((1+l_max)**2,index_m_0in_,n_k,':');
-        a_k_Y_lmk___.ravel()[tmp_i8_index_lhs_] = a_k_Y_yk__.ravel()[tmp_i8_index_rhs_];
+        #a_k_Y_lmk___.ravel()[tmp_i8_index_lhs_] = a_k_Y_yk__.ravel()[tmp_i8_index_rhs_];
+        a_k_Y_lmk___ = matlab_assign_lhs_from_rhs_(a_k_Y_lmk___,tmp_i8_index_lhs_, a_k_Y_yk__.ravel()[tmp_i8_index_rhs_]);
     #end;%for l_val=0:l_max;
     a_k_Y_lkm___ = torch.permute(a_k_Y_lmk___,mtr(mts((0,2,1))));
     if (flag_verbose): print(f' %% a_k_Y_lkm___: ({(1+l_max)},{n_k},{n_m_max})={((1+l_max)*n_k*n_m_max)} ({((1+l_max)*n_k*n_m_max*n_byte_per_complex64/1e9):.2f} GB)');
@@ -312,7 +315,8 @@ def pm_template_3(
                 tmp_expi_sub_1mwS____ = torch.reshape(torch.permute(tmp_expi_sub_wSm___,mtr(mts((2,0,1)))),mtr((n_1,n_m_max,n_w,n_S_sub)));
                 tmp_i8_index_lhs_ = matlab_index_3d_0(n_w,':',n_k_sub,':',n_S,index_nS_sub_);
                 str_einsum = msr('mwS') + ',' + msr('mkw') + '->' + msr('wkS') ;
-                spherical_harmonic_evaluate_wkS___.ravel()[tmp_i8_index_lhs_] = torch.einsum( str_einsum , torch.reshape(tmp_expi_sub_1mwS____.to(dtype=torch.complex64),mtr((n_m_max,n_w,n_S_sub))) , torch.reshape(tmp_shu_mkw1____.to(dtype=torch.complex64),mtr((n_m_max,n_k_sub,n_w))) ).ravel() ;
+                #spherical_harmonic_evaluate_wkS___.ravel()[tmp_i8_index_lhs_] = torch.einsum( str_einsum , torch.reshape(tmp_expi_sub_1mwS____.to(dtype=torch.complex64),mtr((n_m_max,n_w,n_S_sub))) , torch.reshape(tmp_shu_mkw1____.to(dtype=torch.complex64),mtr((n_m_max,n_k_sub,n_w))) ).ravel() ;
+                spherical_harmonic_evaluate_wkS___ = matlab_assign_lhs_from_rhs_(spherical_harmonic_evaluate_wkS___,tmp_i8_index_lhs_, torch.einsum( str_einsum , torch.reshape(tmp_expi_sub_1mwS____.to(dtype=torch.complex64),mtr((n_m_max,n_w,n_S_sub))) , torch.reshape(tmp_shu_mkw1____.to(dtype=torch.complex64),mtr((n_m_max,n_k_sub,n_w))) ).ravel() );
                 nS=nS+n_S_sub;
             #end;%for nviewing_polar_a=0:n_viewing_polar_a-1;
             assert(nS==n_S);
@@ -321,7 +325,8 @@ def pm_template_3(
             #%%%%%%%%;
             
             tmp_i8_index_lhs_ = matlab_index_3d_0(n_w,':',n_k,index_k_,n_S,':');
-            template_wkS___.ravel()[tmp_i8_index_lhs_] = spherical_harmonic_evaluate_wkS___.ravel();
+            #template_wkS___.ravel()[tmp_i8_index_lhs_] = spherical_harmonic_evaluate_wkS___.ravel();
+            template_wkS___ = matlab_assign_lhs_from_rhs_(template_wkS___,tmp_i8_index_lhs_, spherical_harmonic_evaluate_wkS___.ravel());
 
         #%%%%%%%%%%%%%%%%;
         #end;%if (n_k_sub>0);

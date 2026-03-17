@@ -289,15 +289,16 @@ def tfpmut_6(
         for tmp_nM in range(tmp_n_M):
             tmp_i8_index_lhs_wkM_ = matlab_index_2d_0(n_w_sum,':',n_M,index_nM_to_update_[tmp_nM].item());
             tmp_i8_index_rhs_wkM_ = matlab_index_2d_0(n_w_sum,':',n_M,index_nM_to_update_[tmp_nM].item());
-            M_pert_k_p_wkM__.ravel()[tmp_i8_index_lhs_wkM_] = transf_p_to_p(
-                n_k_p_r,
-                k_p_r_,
-                n_w_,
-                n_w_sum,
-                M_orig_k_p_wkM__.ravel()[tmp_i8_index_rhs_wkM_],
-                +image_delta_x_acc_M_[index_nM_to_update_[tmp_nM].item()].item(),
-                +image_delta_y_acc_M_[index_nM_to_update_[tmp_nM].item()].item(),
-            );
+            #M_pert_k_p_wkM__.ravel()[tmp_i8_index_lhs_wkM_] = transf_p_to_p(
+            #    n_k_p_r,
+            #    k_p_r_,
+            #    n_w_,
+            #    n_w_sum,
+            #    M_orig_k_p_wkM__.ravel()[tmp_i8_index_rhs_wkM_],
+            #    +image_delta_x_acc_M_[index_nM_to_update_[tmp_nM].item()].item(),
+            #    +image_delta_y_acc_M_[index_nM_to_update_[tmp_nM].item()].item(),
+            #);
+            M_pert_k_p_wkM__ = matlab_assign_lhs_from_rhs_(M_pert_k_p_wkM__,tmp_i8_index_lhs_wkM_, transf_p_to_p(n_k_p_r,k_p_r_,n_w_,n_w_sum,M_orig_k_p_wkM__.ravel()[tmp_i8_index_rhs_wkM_],+image_delta_x_acc_M_[index_nM_to_update_[tmp_nM].item()].item(),+image_delta_y_acc_M_[index_nM_to_update_[tmp_nM].item()].item()));
         #end;%
         tmp_t = toc(tmp_t); 
         if (flag_verbose>0): disp(sprintf(' %% %% M_pert_k_q_wkM__: %0.3fs',tmp_t)); #end;

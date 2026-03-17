@@ -262,7 +262,8 @@ for nCTF in range(n_CTF):
         n_w = int(n_w_[nk_p_r].item());
         tmp_index_ = (int(n_w_csum_[nk_p_r].item()) + torch.arange(n_w)).to(dtype=torch.int32);
         tmp_i8_index_lhs_ = matlab_index_2d_0(n_w_sum,tmp_index_,n_CTF,nCTF);
-        CTF_k_p_wkC__.ravel()[tmp_i8_index_lhs_] = CTF_k_p_r_kC__[nCTF,nk_p_r].item();
+        #CTF_k_p_wkC__.ravel()[tmp_i8_index_lhs_] = CTF_k_p_r_kC__[nCTF,nk_p_r].item();
+        CTF_k_p_wkC__ = matlab_assign_lhs_from_rhs_(CTF_k_p_wkC__,tmp_i8_index_lhs_, CTF_k_p_r_kC__[nCTF,nk_p_r].item());
     #end;%for nk_p_r=0:n_k_p_r-1;
 #end;%for nCTF=0:n_CTF-1;
 CTF_inv_k_p_wkC__ = torch.tensor([1.0])/torch.maximum(torch.tensor([1e-12]),CTF_k_p_wkC__);
@@ -317,7 +318,8 @@ for ncluster in range(n_cluster):
     assert(size(tmp_UX_kn__,0)==n_k_p_r); assert(size(tmp_UX_kn__,1)==pm_n_UX_rank);
     tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',pm_n_UX_rank,torch.arange(pm_n_UX_rank));
-    pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
+    #pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
+    pm_UX_knc___ = matlab_assign_lhs_from_rhs_(pm_UX_knc___,tmp_i8_index_lhs_, tmp_UX_kn__.ravel()[tmp_i8_index_rhs_]);
     pm_X_weight_rc__[ncluster,:] = X_weight_r_.ravel();
 #end;%for ncluster=0:n_cluster-1;
 tmp_t=toc(tmp_t);
@@ -489,7 +491,8 @@ for ncluster in range(n_cluster):
     assert(size(tmp_UX_kn__,0)==n_k_p_r); assert(size(tmp_UX_kn__,1)==pm_n_UX_rank);
     tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',pm_n_UX_rank,torch.arange(pm_n_UX_rank));
-    pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
+    #pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
+    pm_UX_knc___ = matlab_assign_lhs_from_rhs_(pm_UX_knc___,tmp_i8_index_lhs_, tmp_UX_kn__.ravel()[tmp_i8_index_rhs_]);
     pm_X_weight_rc__[ncluster,:] = X_weight_r_.ravel();
 #end;%for ncluster=0:n_cluster-1;
 tmp_t=toc(tmp_t);
@@ -572,8 +575,8 @@ for nS in range(n_S):
         X_quad = Z_quad / np.maximum(1e-12,np.sqrt(UX_CTF_RS_l2)) / np.maximum(1e-12,np.sqrt(UX_TM_l2));
         Z_SM_quad__[nM,nS] = np.real(Z_quad);
         X_SM_quad__[nM,nS] = np.real(X_quad);
-        UX_CTF_S_l2_SM_quad__[nM,nS] = float(UX_CTF_RS_l2);
-        UX_T_M_l2_SM_quad__[nM,nS] = float(UX_TM_l2);
+        UX_CTF_S_l2_SM_quad__[nM,nS] = float(np.real(UX_CTF_RS_l2));
+        UX_T_M_l2_SM_quad__[nM,nS] = float(np.real(UX_TM_l2));
     #%%%%;
     #end;%for nM=0:n_M-1;
 #end;%for nS=0:n_S-1;

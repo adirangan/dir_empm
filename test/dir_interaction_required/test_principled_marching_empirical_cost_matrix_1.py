@@ -66,7 +66,9 @@ UX_kn__ = torch.zeros(mtr((n_k_p_r,n_UX_rank))).to(dtype=torch.float32);
 U_t__,Sigma_,V_n__ = torch.linalg.svd(X_kk__.T,full_matrices=True); U_n__ = U_t__.T; #%<-- extra transposes to match matlab. ;
 tmp_UX_kn__ = U_n__ ;
 tmp_i8_index_ = matlab_index_2d_0(n_k_p_r,':',n_k_p_r,torch.arange(n_UX_rank));
-UX_kn__.ravel()[tmp_i8_index_] = tmp_UX_kn__.ravel()[tmp_i8_index_].to(dtype=torch.float32);
+#UX_kn__.ravel()[tmp_i8_index_] = tmp_UX_kn__.ravel()[tmp_i8_index_].to(dtype=torch.float32);
+UX_kn__ = matlab_assign_lhs_from_rhs_(UX_kn__,tmp_i8_index_, tmp_UX_kn__.ravel()[tmp_i8_index_].to(dtype=torch.float32));
+
 #%%%%%%%%;
 
 dir_base = '/data/rangan' ;

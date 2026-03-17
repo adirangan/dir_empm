@@ -308,7 +308,8 @@ def tfpmh_Z_gpu_wSM___14(
                     parameter = parameter_timing_update(parameter,sprintf('%s: tfpmh_UX_T_M_sub_l2_gpu_dM__0',str_thisfunction),tmp_t);
                 #end;%if FTK.flag_tf_vs_bf==0;
                 tmp_index_gpu_lhs_ = matlab_index_2d_gpu_0(device_use,n_delta_v,':',n_M,index_nM_in_Mbatch_);
-                UX_T_M_l2_gpu_dM__.ravel()[tmp_index_gpu_lhs_] = UX_T_M_sub_l2_gpu_dM__.ravel(); #%<-- store results. ;
+                #UX_T_M_l2_gpu_dM__.ravel()[tmp_index_gpu_lhs_] = UX_T_M_sub_l2_gpu_dM__.ravel(); #%<-- store results. ;
+                UX_T_M_l2_gpu_dM__ = matlab_assign_lhs_from_rhs_(UX_T_M_l2_gpu_dM__,tmp_index_gpu_lhs_, UX_T_M_sub_l2_gpu_dM__.ravel()); #%<-- store results. ;
             #end;%if flag_precompute_UX_T_M_l2_dM__==0;
             if flag_precompute_UX_T_M_l2_dM__==1:
                 tmp_index_gpu_rhs_ = matlab_index_2d_gpu_0(device_use,n_delta_v,':',n_M,index_nM_in_Mbatch_);
@@ -381,8 +382,10 @@ def tfpmh_Z_gpu_wSM___14(
                     #%%%%;
                     if flag_dwSM:
                         tmp_i8_index_lhs_ = matlab_index_4d_0(n_delta_v,':',n_w_max,':',n_S,index_nS_in_Sbatch_,n_M,index_nM_in_Mbatch_);
-                        Z_dwSM____.ravel()[tmp_i8_index_lhs_] = Z_sub_gpu_dwSM____.cpu().ravel();
-                        X_dwSM____.ravel()[tmp_i8_index_lhs_] = X_sub_gpu_dwSM____.cpu().ravel();
+                        #Z_dwSM____.ravel()[tmp_i8_index_lhs_] = Z_sub_gpu_dwSM____.cpu().ravel();
+                        #X_dwSM____.ravel()[tmp_i8_index_lhs_] = X_sub_gpu_dwSM____.cpu().ravel();
+                        Z_dwSM____ = matlab_assign_lhs_from_rhs_(Z_dwSM____,tmp_i8_index_lhs_, Z_sub_gpu_dwSM____.cpu().ravel());
+                        X_dwSM____ = matlab_assign_lhs_from_rhs_(X_dwSM____,tmp_i8_index_lhs_, X_sub_gpu_dwSM____.cpu().ravel());
                     #%end;%if flag_dwSM;
                     #%%%%%%%%;
                     if flag_optimize_over_gamma_z==0:
@@ -402,12 +405,18 @@ def tfpmh_Z_gpu_wSM___14(
                         tmp_delta_y_gpu_wSM___ = r8_delta_gpu_y_.to(dtype=torch.float32,device=device_use).ravel()[tmp_index_delta_gpu_wSM___];
                         tmp_gamma_z_gpu_wSM___ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float32,device=device_use)/np.maximum(1,n_w_max);
                         tmp_index_gpu_lhs_ = matlab_index_3d_gpu_0(device_use,n_w_max,':',n_S,index_nS_in_Sbatch_,n_M,index_nM_in_Mbatch_);
-                        Z_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = tmp_Z_gpu_wSM___.ravel();
-                        X_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = tmp_X_gpu_wSM___.ravel();
-                        delta_x_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_x_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
-                        delta_y_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_y_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
-                        gamma_z_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = (torch.reshape(tmp_gamma_z_gpu_wSM___,mtr((n_w_max,1,1)))*torch.ones(mtr((1,n_S_sub,n_M_sub))).to(dtype=torch.float32,device=device_use)).to(dtype=torch.float32,device=device_use).ravel();
-                        index_sub_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_index_delta_gpu_wSM_.to(dtype=torch.int32,device=device_use),mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
+                        #Z_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = tmp_Z_gpu_wSM___.ravel();
+                        #X_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = tmp_X_gpu_wSM___.ravel();
+                        #delta_x_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_x_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
+                        #delta_y_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_y_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
+                        #gamma_z_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = (torch.reshape(tmp_gamma_z_gpu_wSM___,mtr((n_w_max,1,1)))*torch.ones(mtr((1,n_S_sub,n_M_sub))).to(dtype=torch.float32,device=device_use)).to(dtype=torch.float32,device=device_use).ravel();
+                        #index_sub_gpu_wSM___.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_index_delta_gpu_wSM_.to(dtype=torch.int32,device=device_use),mtr((n_w_max,n_S_sub,n_M_sub))).ravel();
+                        Z_gpu_wSM___ = matlab_assign_lhs_from_rhs_(Z_gpu_wSM___,tmp_index_gpu_lhs_, tmp_Z_gpu_wSM___.ravel());
+                        X_gpu_wSM___ = matlab_assign_lhs_from_rhs_(X_gpu_wSM___,tmp_index_gpu_lhs_, tmp_X_gpu_wSM___.ravel());
+                        delta_x_gpu_wSM___ = matlab_assign_lhs_from_rhs_(delta_x_gpu_wSM___,tmp_index_gpu_lhs_, torch.reshape(tmp_delta_x_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel());
+                        delta_y_gpu_wSM___ = matlab_assign_lhs_from_rhs_(delta_y_gpu_wSM___,tmp_index_gpu_lhs_, torch.reshape(tmp_delta_y_gpu_wSM___,mtr((n_w_max,n_S_sub,n_M_sub))).ravel());
+                        gamma_z_gpu_wSM___ = matlab_assign_lhs_from_rhs_(gamma_z_gpu_wSM___,tmp_index_gpu_lhs_, (torch.reshape(tmp_gamma_z_gpu_wSM___,mtr((n_w_max,1,1)))*torch.ones(mtr((1,n_S_sub,n_M_sub))).to(dtype=torch.float32,device=device_use)).to(dtype=torch.float32,device=device_use).ravel());
+                        index_sub_gpu_wSM___ = matlab_assign_lhs_from_rhs_(index_sub_gpu_wSM___,tmp_index_gpu_lhs_, torch.reshape(tmp_index_delta_gpu_wSM_.to(dtype=torch.int32,device=device_use),mtr((n_w_max,n_S_sub,n_M_sub))).ravel());
                         UX_CTF_S_l2_gpu_S_[index_nS_in_Sbatch_] = UX_CTF_S_sub_l2_gpu_S_.ravel();
                         tmp_t = toc(tmp_t); 
                         if (flag_verbose>1): disp(sprintf(' %% X_gpu_wSM___: %0.6f',tmp_t)); #end;
@@ -439,12 +448,18 @@ def tfpmh_Z_gpu_wSM___14(
                         tmp_delta_y_gpu_SM__ = r8_delta_gpu_y_.to(dtype=torch.float32,device=device_use).ravel()[tmp_index_delta_gpu_SM__];
                         tmp_gamma_z_gpu_SM__ = 2*pi*tmp_index_gamma_gpu_SM__.to(dtype=torch.float32,device=device_use)/np.maximum(1,n_w_max);
                         tmp_index_gpu_lhs_ = matlab_index_2d_gpu_0(device_use,n_S,index_nS_in_Sbatch_,n_M,index_nM_in_Mbatch_);
-                        Z_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = tmp_Z_gpu_SM__.ravel();
-                        X_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = tmp_X_gpu_SM__.ravel();
-                        delta_x_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_x_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
-                        delta_y_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_y_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
-                        gamma_z_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_gamma_z_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
-                        index_sub_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_index_dw_gpu_SM_.to(dtype=torch.int32,device=device_use),mtr((n_S_sub,n_M_sub))).ravel();
+                        #Z_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = tmp_Z_gpu_SM__.ravel();
+                        #X_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = tmp_X_gpu_SM__.ravel();
+                        #delta_x_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_x_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
+                        #delta_y_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_delta_y_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
+                        #gamma_z_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_gamma_z_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel();
+                        #index_sub_gpu_SM__.ravel()[tmp_index_gpu_lhs_] = torch.reshape(tmp_index_dw_gpu_SM_.to(dtype=torch.int32,device=device_use),mtr((n_S_sub,n_M_sub))).ravel();
+                        Z_gpu_SM__ = matlab_assign_lhs_from_rhs_(Z_gpu_SM__,tmp_index_gpu_lhs_, tmp_Z_gpu_SM__.ravel());
+                        X_gpu_SM__ = matlab_assign_lhs_from_rhs_(X_gpu_SM__,tmp_index_gpu_lhs_, tmp_X_gpu_SM__.ravel());
+                        delta_x_gpu_SM__ = matlab_assign_lhs_from_rhs_(delta_x_gpu_SM__,tmp_index_gpu_lhs_, torch.reshape(tmp_delta_x_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel());
+                        delta_y_gpu_SM__ = matlab_assign_lhs_from_rhs_(delta_y_gpu_SM__,tmp_index_gpu_lhs_, torch.reshape(tmp_delta_y_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel());
+                        gamma_z_gpu_SM__ = matlab_assign_lhs_from_rhs_(gamma_z_gpu_SM__,tmp_index_gpu_lhs_, torch.reshape(tmp_gamma_z_gpu_SM__,mtr((n_S_sub,n_M_sub))).ravel());
+                        index_sub_gpu_SM__ = matlab_assign_lhs_from_rhs_(index_sub_gpu_SM__,tmp_index_gpu_lhs_, torch.reshape(tmp_index_dw_gpu_SM_.to(dtype=torch.int32,device=device_use),mtr((n_S_sub,n_M_sub))).ravel());
                         UX_CTF_S_l2_gpu_S_[index_nS_in_Sbatch_] = UX_CTF_S_sub_l2_gpu_S_.ravel();
                         tmp_t = toc(tmp_t); 
                         if (flag_verbose>1): disp(sprintf(' %% X_gpu_SM__: %0.6f',tmp_t)); #end;

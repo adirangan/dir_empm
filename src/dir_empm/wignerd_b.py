@@ -113,7 +113,8 @@ def wignerd_b(
                 #end;%if (nl~=-nmp and nl~=+nmp); % use recurrence C ;
                 #%%%%%%%%%%%%%%%%;
                 tmp_i8_index_rhs_ = matlab_index_2d_0(2*nl+1,nl+nmp,2*nl+1,nl+nmn);
-                W.ravel()[tmp_i8_index_rhs_] = tmp;
+                #W.ravel()[tmp_i8_index_rhs_] = tmp;
+                W = matlab_assign_lhs_from_rhs_(W,tmp_i8_index_rhs_, tmp);
             #end;for nmp = -nl:+nl;
         #end;%for nmn = -nl:+nl; 
         W_[nl] = W;

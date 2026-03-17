@@ -62,10 +62,12 @@ def rotate_p_to_p_fftw(
             for nS in range(n_S):
                 tmp_index_ = int(nS*n_w_sum) + torch.arange(n_w_sum).to(dtype=torch.int32);
                 if n_gamma_z==1:
-                    M_p_.ravel()[tmp_index_] = rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[0].item());
+                    #M_p_.ravel()[tmp_index_] = rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[0].item());
+                    M_p_ = matlab_assign_lhs_from_rhs_(M_p_,tmp_index_, rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[0].item()));
                 #end;%if n_gamma_z==1;
                 if n_gamma_z> 1:
-                    M_p_.ravel()[tmp_index_] = rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[nS].item());
+                    #M_p_.ravel()[tmp_index_] = rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[nS].item());
+                    M_p_ = matlab_assign_lhs_from_rhs_(M_p_,tmp_index_, rotate_p_to_p_fftw(n_r,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],gamma_z_[nS].item()));
                 #end;%if n_gamma_z> 1;
             #end;%for nS=0:n_S-1;
         #end;%if n_S> 1;

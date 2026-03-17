@@ -15,6 +15,7 @@ def local_yk__from_yk_(
         n_y = int(n_y_[nk_p_r].item());
         tmp_i8_index_rhs_ = int(n_y_csum_[nk_p_r].item()) + torch.arange(n_y);
         tmp_i8_index_lhs_ = matlab_index_2d_0(n_y_max,torch.arange(n_y),n_k_p_r,nk_p_r);
-        tmp_yk__.ravel()[tmp_i8_index_lhs_] = tmp_yk_[tmp_i8_index_rhs_].to(dtype=torch.complex64);
+        #tmp_yk__.ravel()[tmp_i8_index_lhs_] = tmp_yk_[tmp_i8_index_rhs_].to(dtype=torch.complex64);
+        tmp_yk__ = matlab_assign_lhs_from_rhs_(tmp_yk__,tmp_i8_index_lhs_, tmp_yk_[tmp_i8_index_rhs_].to(dtype=torch.complex64));
     #end;%for nk_p_r=0:n_k_p_r-1;
     return(tmp_yk__) ;

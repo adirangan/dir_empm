@@ -132,7 +132,8 @@ def convert_k_p_to_spharm_uniform_over_n_k_p_r_5(
             m_val_ = torch.arange(-l_val,+l_val+1).to(dtype=torch.int32);
             tmp_i8_index_lhs_ = matlab_index_2d_0(n_y_max,l_val**2+l_val+m_val_,n_k_p_r,':');
             tmp_i8_index_rhs_ = matlab_index_3d_0(1+l_max_max,l_val,1+2*l_max_max,l_max_max+m_val_,n_k_p_r,':');
-            a_k_Y_yk__.ravel()[tmp_i8_index_lhs_] = a_k_Y_lmk___.ravel()[tmp_i8_index_rhs_];
+            #a_k_Y_yk__.ravel()[tmp_i8_index_lhs_] = a_k_Y_lmk___.ravel()[tmp_i8_index_rhs_];
+            a_k_Y_yk__ = matlab_assign_lhs_from_rhs_(a_k_Y_yk__,tmp_i8_index_lhs_, a_k_Y_lmk___.ravel()[tmp_i8_index_rhs_]);
         #end;%for l_val=0:l_max;
     #end;%for nl=0:numel(l_max_)-1;
     a_k_Y_yk_ = local_yk_from_yk__(n_k_p_r,l_max_,a_k_Y_yk__);

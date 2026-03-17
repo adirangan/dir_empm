@@ -79,9 +79,11 @@ def plane_wave_expansion_2(
     for l_val in range(l_max_max+1):
         tmp_jl_kx__ = torch.zeros(mtr((n_k_p_r,n_x))).to(dtype=torch.float32);
         if (l_val==0): tmp_jl_kx__ = tmp_jl_kx__ + torch.tensor([1.0]); #end;
-        tmp_jl_kx__.ravel()[tmp_index_big_] = jv(l_val+0.5,t_p_kx_big_)*torch.sqrt(pi/(2*t_p_kx_big_));
+        #tmp_jl_kx__.ravel()[tmp_index_big_] = jv(l_val+0.5,t_p_kx_big_)*torch.sqrt(pi/(2*t_p_kx_big_));
+        tmp_jl_kx__ = matlab_assign_lhs_from_rhs_(tmp_jl_kx__,tmp_index_big_, jv(l_val+0.5,t_p_kx_big_)*torch.sqrt(pi/(2*t_p_kx_big_)));
         tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',n_x,':',1+l_max_max,l_val);
-        jl_kxl___.ravel()[tmp_i8_index_lhs_] = tmp_jl_kx__.ravel();
+        #jl_kxl___.ravel()[tmp_i8_index_lhs_] = tmp_jl_kx__.ravel();
+        jl_kxl___ = matlab_assign_lhs_from_rhs_(jl_kxl___,tmp_i8_index_lhs_, tmp_jl_kx__.ravel());
     #end;%for l_val=0:l_max_max;
     jl_xlk___ = torch.permute(jl_kxl___,mtr(mts((1,2,0))));
     tmp_t=toc(tmp_t);

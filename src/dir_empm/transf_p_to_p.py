@@ -66,10 +66,12 @@ def transf_p_to_p(
             for nS in range(n_S):
                 tmp_index_ = int(nS*n_w_sum) + torch.arange(n_w_sum).to(dtype=torch.int32);
                 if n_delta_v==1:
-                    M_p_.ravel()[tmp_index_] = transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[0].item(),delta_y_[0].item());
+                    #M_p_.ravel()[tmp_index_] = transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[0].item(),delta_y_[0].item());
+                    M_p_ = matlab_assign_lhs_from_rhs_(M_p_,tmp_index_, transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[0].item(),delta_y_[0].item()));
                 #end;%if n_delta_v==1;
                 if n_delta_v> 1:
-                    M_p_.ravel()[tmp_index_] = transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[nS].item(),delta_y_[nS].item());
+                    #M_p_.ravel()[tmp_index_] = transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[nS].item(),delta_y_[nS].item());
+                    M_p_ = matlab_assign_lhs_from_rhs_(M_p_,tmp_index_, transf_p_to_p(n_r,grid_p_,n_w_,n_w_sum,S_p_.ravel()[tmp_index_],delta_x_[nS].item(),delta_y_[nS].item()));
                 #end;%if n_delta_v> 1;
             #end;%for nS=0:n_S-1;
         #end;%if n_S> 1;

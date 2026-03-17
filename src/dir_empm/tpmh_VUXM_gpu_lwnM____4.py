@@ -66,7 +66,8 @@ def tpmh_VUXM_gpu_lwnM____4(
     tmp_t = tic();
     M_k_q_centered_padded_gpu_rwM___ = torch.concatenate( ( torch.zeros(mtr((l_max,n_k_p_r,n_M))).to(dtype=torch.complex64,device=device_use) , torch.roll(torch.reshape(M_k_q_gpu_wrM__,mtr((n_w_max,n_k_p_r,n_M))),-n_w_2,dims=2-0) , torch.zeros(mtr((l_max,n_k_p_r,n_M))).to(dtype=torch.complex64,device=device_use) ) , 2-0 ).to(dtype=torch.complex64,device=device_use);
     tmp_i8_index_lhs_ = matlab_index_3d_gpu_0(device_use,l_max+n_w_max+l_max,l_max,n_k_p_r,':',n_M,':');
-    M_k_q_centered_padded_gpu_rwM___.ravel()[tmp_i8_index_lhs_] = torch.zeros(1*n_k_p_r*n_M).to(dtype=torch.complex64,device=device_use);
+    #M_k_q_centered_padded_gpu_rwM___.ravel()[tmp_i8_index_lhs_] = torch.zeros(1*n_k_p_r*n_M).to(dtype=torch.complex64,device=device_use);
+    M_k_q_centered_padded_gpu_rwM___ = matlab_assign_lhs_from_rhs_(M_k_q_centered_padded_gpu_rwM___,tmp_i8_index_lhs_, torch.zeros(1*n_k_p_r*n_M).to(dtype=torch.complex64,device=device_use));
     M_k_q_centered_padded_gpu_rwM___ = torch.permute(M_k_q_centered_padded_gpu_rwM___,mtr(mts((1,0,2))));
     tmp_t = toc(tmp_t);
     if (flag_verbose): disp(sprintf(' %% M_k_q_centered_padded_gpu_rwM___: time %0.6fs',tmp_t)); #end;
@@ -84,7 +85,8 @@ def tpmh_VUXM_gpu_lwnM____4(
         tmp_i8_index_rhs_nrl_ = matlab_index_3d_gpu_0(device_use,n_UX_rank,':',n_k_p_r,':',n_svd_l,nl);
         tmp_i8_index_rhs_rwM_ = matlab_index_3d_gpu_0(device_use,n_k_p_r,':',l_max+n_w_max+l_max,index_nw_centered_padded_0in_,n_M,':');
         str_einsum = msr('nr') + ',' + msr('rwM') + '->' + msr('nwM') ;
-        V_UX_M_centered_gpu_nwMl____.ravel()[tmp_i8_index_lhs_nwMl_] = torch.einsum( str_einsum , torch.reshape(V_UX_gpu_nrl___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_nrl_],mtr((n_UX_rank,n_k_p_r)))/np.maximum(1,n_w_max) , torch.reshape(M_k_q_centered_padded_gpu_rwM___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_w_max-1,n_M))) ).ravel()  ;
+        #V_UX_M_centered_gpu_nwMl____.ravel()[tmp_i8_index_lhs_nwMl_] = torch.einsum( str_einsum , torch.reshape(V_UX_gpu_nrl___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_nrl_],mtr((n_UX_rank,n_k_p_r)))/np.maximum(1,n_w_max) , torch.reshape(M_k_q_centered_padded_gpu_rwM___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_w_max-1,n_M))) ).ravel() ;
+        V_UX_M_centered_gpu_nwMl____ = matlab_assign_lhs_from_rhs_(V_UX_M_centered_gpu_nwMl____,tmp_i8_index_lhs_nwMl_, torch.einsum( str_einsum , torch.reshape(V_UX_gpu_nrl___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_nrl_],mtr((n_UX_rank,n_k_p_r)))/np.maximum(1,n_w_max) , torch.reshape(M_k_q_centered_padded_gpu_rwM___.to(dtype=torch.complex64,device=device_use).ravel()[tmp_i8_index_rhs_rwM_],mtr((n_k_p_r,n_w_max-1,n_M))) ).ravel() );
     #end;%for nl=0:n_svd_l-1;
     tmp_t = toc(tmp_t);
     if (flag_verbose): disp(sprintf(' %% V_UX_M_centered_padded_lwMn____: time %0.6fs',tmp_t)); #end;

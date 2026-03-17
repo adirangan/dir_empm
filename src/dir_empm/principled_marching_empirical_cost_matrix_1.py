@@ -25,7 +25,7 @@ def principled_marching_empirical_cost_matrix_1(
     if numel_unique(n_w_)==1:
         M_k_q_rwM___ = torch.permute(torch.reshape(M_k_q_wkM__,mtr((n_w_max,n_k_p_r,n_M))),mtr(mts((1,0,2)))); 
         tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',n_w_max,int(n_w_max/2),n_M,':');
-        M_k_q_rwM___.ravel()[tmp_i8_index_lhs_] = 0.0;
+        M_k_q_rwM___ = matlab_assign_lhs_from_rhs_(M_k_q_rwM___,tmp_i8_index_lhs_, 0.0);
     #end;%if numel(unique(n_w_))==1;
 
     X_00_kk__ = torch.zeros(n_k_p_r,n_k_p_r).to(dtype=torch.float32);

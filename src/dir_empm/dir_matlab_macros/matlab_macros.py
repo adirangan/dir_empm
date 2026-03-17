@@ -51,5 +51,6 @@ from . parameter_timing_printf import parameter_timing_printf ;
 from . matlab_svds import matlab_svds ;
 from . matlab_save import matlab_save ;
 from . matlab_load import matlab_load ;
+from . matlab_assign_lhs_from_rhs_ import matlab_assign_lhs_from_rhs_ ;
 
 

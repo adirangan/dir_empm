@@ -57,6 +57,7 @@ __all__ = [
     "matlab_svds",
     "matlab_save",
     "matlab_load",
+    "matlab_assign_lhs_from_rhs_",
 ];
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;

@@ -9,10 +9,14 @@ from dir_empm.rotate_p_to_p_fftw import rotate_p_to_p_fftw ;
 def R2(gamma_z):
     R2__ = torch.zeros(mtr((2,2))).to(dtype=torch.float32);
     na=0;
-    R2__.ravel()[na] = +np.cos(gamma_z); na=na+1;
-    R2__.ravel()[na] = +np.sin(gamma_z); na=na+1;
-    R2__.ravel()[na] = -np.sin(gamma_z); na=na+1;
-    R2__.ravel()[na] = +np.cos(gamma_z); na=na+1;
+    #R2__.ravel()[na] = +np.cos(gamma_z); na=na+1;
+    #R2__.ravel()[na] = +np.sin(gamma_z); na=na+1;
+    #R2__.ravel()[na] = -np.sin(gamma_z); na=na+1;
+    #R2__.ravel()[na] = +np.cos(gamma_z); na=na+1;
+    R2__ = matlab_assign_lhs_from_rhs_(R2__,na, +np.cos(gamma_z)); na=na+1;
+    R2__ = matlab_assign_lhs_from_rhs_(R2__,na, +np.sin(gamma_z)); na=na+1;
+    R2__ = matlab_assign_lhs_from_rhs_(R2__,na, -np.sin(gamma_z)); na=na+1;
+    R2__ = matlab_assign_lhs_from_rhs_(R2__,na, +np.cos(gamma_z)); na=na+1;
     assert(na==4);
     return(R2__);
 #end;def;
@@ -20,15 +24,24 @@ def R2(gamma_z):
 def Rz(azimu_b):
     Rz__ = torch.zeros(mtr((3,3))).to(dtype=torch.float32);
     na=0;
-    Rz__.ravel()[na] = +np.cos(azimu_b); na=na+1;
-    Rz__.ravel()[na] = +np.sin(azimu_b); na=na+1;
-    Rz__.ravel()[na] =                0; na=na+1;
-    Rz__.ravel()[na] = -np.sin(azimu_b); na=na+1;
-    Rz__.ravel()[na] = +np.cos(azimu_b); na=na+1;
-    Rz__.ravel()[na] =                0; na=na+1;
-    Rz__.ravel()[na] =                0; na=na+1;
-    Rz__.ravel()[na] =                0; na=na+1;
-    Rz__.ravel()[na] =                1; na=na+1;
+    #Rz__.ravel()[na] = +np.cos(azimu_b); na=na+1;
+    #Rz__.ravel()[na] = +np.sin(azimu_b); na=na+1;
+    #Rz__.ravel()[na] =                0; na=na+1;
+    #Rz__.ravel()[na] = -np.sin(azimu_b); na=na+1;
+    #Rz__.ravel()[na] = +np.cos(azimu_b); na=na+1;
+    #Rz__.ravel()[na] =                0; na=na+1;
+    #Rz__.ravel()[na] =                0; na=na+1;
+    #Rz__.ravel()[na] =                0; na=na+1;
+    #Rz__.ravel()[na] =                1; na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na, +np.cos(azimu_b)); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na, +np.sin(azimu_b)); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                0); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na, -np.sin(azimu_b)); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na, +np.cos(azimu_b)); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                0); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                0); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                0); na=na+1;
+    Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                1); na=na+1;
     assert(na==9);
     return(Rz__);
 #end;def;
@@ -36,15 +49,24 @@ def Rz(azimu_b):
 def Ry(polar_a):
     Ry__ = torch.zeros(mtr((3,3))).to(dtype=torch.float32);
     na=0;
-    Ry__.ravel()[na] = +np.cos(polar_a); na=na+1;
-    Ry__.ravel()[na] =                0; na=na+1;
-    Ry__.ravel()[na] = -np.sin(polar_a); na=na+1;
-    Ry__.ravel()[na] =                0; na=na+1;
-    Ry__.ravel()[na] =                1; na=na+1;
-    Ry__.ravel()[na] =                0; na=na+1;
-    Ry__.ravel()[na] = +np.sin(polar_a); na=na+1;
-    Ry__.ravel()[na] =                0; na=na+1;
-    Ry__.ravel()[na] = +np.cos(polar_a); na=na+1;
+    #Ry__.ravel()[na] = +np.cos(polar_a); na=na+1;
+    #Ry__.ravel()[na] =                0; na=na+1;
+    #Ry__.ravel()[na] = -np.sin(polar_a); na=na+1;
+    #Ry__.ravel()[na] =                0; na=na+1;
+    #Ry__.ravel()[na] =                1; na=na+1;
+    #Ry__.ravel()[na] =                0; na=na+1;
+    #Ry__.ravel()[na] = +np.sin(polar_a); na=na+1;
+    #Ry__.ravel()[na] =                0; na=na+1;
+    #Ry__.ravel()[na] = +np.cos(polar_a); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na, +np.cos(polar_a)); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                0); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na, -np.sin(polar_a)); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                0); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                1); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                0); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na, +np.sin(polar_a)); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                0); na=na+1;
+    Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na, +np.cos(polar_a)); na=na+1;
     assert(na==9);
     return(Ry__);
 #end;def;
@@ -229,7 +251,8 @@ def test_rbp_0(
             S_k_p_wk_ = S_k_p_wk_ + torch.exp(+i*2*pi*(k_c_0_wk_*tmp_delta_[0].item() + k_c_1_wk_*tmp_delta_[1].item()));
         #end;for nsource in range(n_source):
         tmp_i8_index_lhs_ = matlab_index_2d_0(n_w_sum,':',n_S,nS);
-        S_k_p_wkS__.ravel()[tmp_i8_index_lhs_] = S_k_p_wk_.ravel();
+        #S_k_p_wkS__.ravel()[tmp_i8_index_lhs_] = S_k_p_wk_.ravel();
+        S_k_p_wkS__ = matlab_assign_lhs_from_rhs_(S_k_p_wkS__,tmp_i8_index_lhs_, S_k_p_wk_.ravel());
     #end;%for nS=0:n_S-1;
 
     if (flag_verbose>2):
@@ -260,7 +283,8 @@ def test_rbp_0(
         CTF_phi_C_[nCTF] = CTF_phi;
         CTF_k_p_wk_ = 2*k_p_r_wk_ * torch.cos(k_p_w_wk_-CTF_phi);
         tmp_i8_index_lhs_ = matlab_index_2d_0(n_w_sum,':',n_CTF,nCTF);
-        CTF_k_p_wkC__.ravel()[tmp_i8_index_lhs_] = CTF_k_p_wk_.ravel().to(dtype=torch.complex64);
+        #CTF_k_p_wkC__.ravel()[tmp_i8_index_lhs_] = CTF_k_p_wk_.ravel().to(dtype=torch.complex64);
+        CTF_k_p_wkC__ = matlab_assign_lhs_from_rhs_(CTF_k_p_wkC__,tmp_i8_index_lhs_, CTF_k_p_wk_.ravel().to(dtype=torch.complex64));
     #end;%for nCTF=0:n_CTF-1;
     index_nCTF_from_nM_ = torch.tensor(np.mod(np.arange(n_M),n_CTF).astype(int)).to(dtype=torch.int32);
 
