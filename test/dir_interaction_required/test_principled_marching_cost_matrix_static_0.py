@@ -149,5 +149,98 @@ fnorm_disp(flag_verbose,'static_X_tau_kk__',static_X_tau_kk__,'X_tau_kk__',X_tau
 static_weight_so3 = 157.9136704174297279 ; #%<-- should be (2*pi)*(2*pi)*4 ;
 fnorm_disp(flag_verbose,'static_weight_so3',static_weight_so3,'weight_so3',weight_so3,'%<-- should be zero');
 
+disp(sprintf(' %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% '));
+disp(sprintf(' %% testing principled_marching_empirical_cost_matrix_2 again, this time with CTF_k_p_r_xcor_kk__ as rank-1.'));
+disp(sprintf(' %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% %% '));
+n_k_p_r = int(3);
+k_p_r_ = torch.tensor([3,5,7]).to(dtype=torch.float32);
+weight_k_p_r_ = torch.tensor([0.25,0.50,0.75]).to(dtype=torch.float32)**2;
+l_max_ = torch.tensor([2,4,6]).to(dtype=torch.int32);
+n_y_ = (1+l_max_)**2;
+n_y_sum = int(torch.sum(n_y_).item());
+n_molecule = int(2);
+molecule_density_ = torch.tensor([0.7,1.3]).to(dtype=torch.float32);
+a_k_Y_ykv__ = torch.reshape(torch.tensor(np.mod(np.arange(n_y_sum*n_molecule),13)-6).to(dtype=torch.complex64) + i*torch.tensor(np.mod(np.arange(n_y_sum*n_molecule),17)-8).to(dtype=torch.complex64),mtr((n_y_sum,n_molecule))) / 19.0;
+CTF_k_p_r_xcor_kk__ = torch.reshape(torch.tensor([1,-2,-3,-2,4,-5,-3,-5,6]).to(dtype=torch.float32),mtr((3,3))) / 7.0;
+CTF_k_p_r_xcor_kk__ = torch.reshape(torch.tensor([1,2,3,2,4,6,3,6,9]).to(dtype=torch.float32),mtr((3,3))) / 7.0; #%<-- [1;2;3]*[1,2,3]/7.0 ;
+delta_sigma = 0.15;
+pm_delta_integral_tolerance = 1e-9;
+#%%%%%%%%;
+(
+    X_kk__,
+    X_weight_r_,
+    X_ori_kk__,
+    X_tau_kk__,
+    weight_so3,
+) = principled_marching_cost_matrix_7(
+    n_k_p_r,
+    k_p_r_,
+    weight_k_p_r_,
+    l_max_,
+    n_molecule,
+    molecule_density_,
+    a_k_Y_ykv__,
+    CTF_k_p_r_xcor_kk__,
+    delta_sigma,
+    pm_delta_integral_tolerance,
+)[:5];
+#%%%%%%%%;
 
+#%%%%%%%%;
+#% disp(num2str(X_kk__(:),';%+0.16f ...\n'))
+#%%%%%%%%;
+static_X_kk__ = torch.tensor([
+    +0.8779589809787692,
+    -0.2870699378074536,
+    +0.0048051446643973,
+    -0.2870699378074536,
+    +33.3109107970662208,
+    -5.4414798148158328,
+    +0.0048051446643973,
+    -5.4414798148158523,
+    +322.5773281036429125,
+]).to(dtype=torch.float32);
+static_X_kk__ = torch.reshape(static_X_kk__,mtr((3,3)));
+fnorm_disp(flag_verbose,'static_X_kk__',static_X_kk__,'X_kk__',X_kk__,'%<-- should be zero');
+#%%%%%%%%;
+static_X_weight_r_ = torch.tensor([
+    +0.25,
+    +0.50,
+    +0.75,
+]).to(dtype=torch.float32);
+fnorm_disp(flag_verbose,'static_X_weight_r_',static_X_weight_r_,'X_weight_r_',X_weight_r_,'%<-- should be zero');
+#%%%%%%%%;
+#% disp(num2str(X_ori_kk__(:),';%+0.16f ...\n'))
+#%%%%%%%%;
+static_X_ori_kk__ = torch.tensor([
+    +0.0055598288484369 + 0.0000000000000000*i,
+    -0.0107424812030075 - 0.0043485358132173*i,
+    +0.0371050776612584 + 0.0114625791452315*i,
+    -0.0107424812030075 + 0.0043485358132173*i,
+    +0.2109438068856351 + 0.0000000000000000*i,
+    -0.2036263355757815 + 0.0132266521567076*i,
+    +0.0371050776612584 - 0.0114625791452315*i,
+    -0.2036263355757815 - 0.0132266521567076*i,
+    +2.0427447937277408 + 0.0000000000000000*i,
+]).to(dtype=torch.complex64);
+static_X_ori_kk__ = torch.reshape(static_X_ori_kk__,mtr((3,3)));
+fnorm_disp(flag_verbose,'static_X_ori_kk__',static_X_ori_kk__,'X_ori_kk__',X_ori_kk__,'%<-- should be zero');
+#%%%%%%%%;
+#% disp(num2str(X_tau_kk__(:),';%+0.16f ...\n'))
+#%%%%%%%%;
+static_X_tau_kk__ = torch.tensor([
++0.0414976441478332 + 0.0000000000000000*i,
++0.0863150998274930 - 0.0730358537001864*i,
++0.4169780925489920 - 0.0276813696844958*i,
++0.0863150998274930 + 0.0730358537001864*i,
++0.3080785101535136 + 0.0000000000000000*i,
++0.9160336431466161 + 0.6763041939424745*i,
++0.4169780925489920 + 0.0276813696844958*i,
++0.9160336431466161 - 0.6763041939424745*i,
++4.2083590883200568 + 0.0000000000000000*i,
+]).to(dtype=torch.complex64);
+static_X_tau_kk__ = torch.reshape(static_X_tau_kk__,mtr((3,3)));
+fnorm_disp(flag_verbose,'static_X_tau_kk__',static_X_tau_kk__,'X_tau_kk__',X_tau_kk__,'%<-- should be zero');
+static_weight_so3 = 157.9136704174297279 ; #%<-- should be (2*pi)*(2*pi)*4 ;
+fnorm_disp(flag_verbose,'static_weight_so3',static_weight_so3,'weight_so3',weight_so3,'%<-- should be zero');
 
