@@ -14,6 +14,7 @@ from dir_empm.convert_k_p_to_spharm_4 import convert_k_p_to_spharm_4 ;
 from dir_empm.convert_k_p_to_spharm_uniform_over_n_k_p_r_5 import convert_k_p_to_spharm_uniform_over_n_k_p_r_5 ;
 from dir_empm.convert_spharm_to_k_p_4 import convert_spharm_to_k_p_4 ;
 from dir_empm.convert_spharm_to_k_p_uniform_over_n_k_p_r_5 import convert_spharm_to_k_p_uniform_over_n_k_p_r_5 ;
+from dir_empm.convert_spharm_to_x_c_uniform_over_n_k_p_r_5 import convert_spharm_to_x_c_uniform_over_n_k_p_r_5 ;
 from dir_empm.local_yk__from_yk_ import local_yk__from_yk_ ;
 from dir_empm.local_yk_from_yk__ import local_yk_from_yk__ ;
 from dir_empm.pm_template_2 import pm_template_2 ;
@@ -1395,6 +1396,88 @@ tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_5_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_5_',a_k_p_quad_5_,' %%<-- should be zero');
 #%%%%%%%%;
+
+r'''
+%%%%%%%%;
+% test convert_spharm_to_x_c_uniform_over_n_k_p_r_5. ;
+%%%%%%%%;
+tmp_t = tic;
+if ~exist('sqrt_2lp1_','var'); sqrt_2lp1_ = []; end;
+if ~exist('sqrt_2mp1_','var'); sqrt_2mp1_ = []; end;
+if ~exist('sqrt_rat0_m_','var'); sqrt_rat0_m_ = []; end;
+if ~exist('sqrt_rat3_lm__','var'); sqrt_rat3_lm__ = []; end;
+if ~exist('sqrt_rat4_lm__','var'); sqrt_rat4_lm__ = []; end;
+[ ... 
+ a_x_c_quad_6_ ...
+,a_k_p_quad_6_ ...
+,sqrt_2lp1_ ...
+,sqrt_2mp1_ ...
+,sqrt_rat0_m_ ...
+,sqrt_rat3_lm__ ...
+,sqrt_rat4_lm__ ...
+] = ...
+convert_spharm_to_x_c_uniform_over_n_k_p_r_5( ...
+ flag_verbose ...
+,k_eq_d ...
+,n_k_p_r ...
+,k_p_r_ ...
+,k_p_r_max ...
+,weight_3d_k_p_r_ ...
+,l_max_ ...
+,a_k_Y_form_ ...
+,half_diameter_x_c ...
+,n_x_c ...
+,sqrt_2lp1_ ...
+,sqrt_2mp1_ ...
+,sqrt_rat0_m_ ...
+,sqrt_rat3_lm__ ...
+,sqrt_rat4_lm__ ...
+);
+tmp_t = toc(tmp_t); disp(sprintf(' %% a_x_c_quad_6_ time %0.2fs',tmp_t));
+%%%%%%%%;
+fnorm_disp(flag_verbose,'a_x_c_form___(:)',a_x_c_form___(:),'a_x_c_quad_6_',a_x_c_quad_6_,' %%<-- should be small');
+fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad_6_,' %%<-- should be zero');
+%%%%%%%%;
+'''
+
+tmp_t = tic();
+if 'sqrt_2lp1_' not in locals(): sqrt_2lp1_ = None; #end;
+if 'sqrt_2mp1_' not in locals(): sqrt_2mp1_ = None; #end;
+if 'sqrt_rat0_m_' not in locals(): sqrt_rat0_m_ = None; #end;
+if 'sqrt_rat3_lm__' not in locals(): sqrt_rat3_lm__ = None; #end;
+if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
+(
+    a_x_c_quad_6_,
+    a_k_p_quad_6_,
+    sqrt_2lp1_,
+    sqrt_2mp1_,
+    sqrt_rat0_m_,
+    sqrt_rat3_lm__,
+    sqrt_rat4_lm__,
+) = convert_spharm_to_x_c_uniform_over_n_k_p_r_5(
+    0*flag_verbose,
+    k_eq_d,
+    n_k_p_r,
+    k_p_r_,
+    k_p_r_max,
+    weight_3d_k_p_r_,
+    l_max_,
+    a_k_Y_form_,
+    half_diameter_x_c,
+    n_x_c,
+    sqrt_2lp1_,
+    sqrt_2mp1_,
+    sqrt_rat0_m_,
+    sqrt_rat3_lm__,
+    sqrt_rat4_lm__,
+);
+tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_6_ time %0.2fs',tmp_t));
+#%%%%%%%%;
+fnorm_disp(flag_verbose,'a_x_c_form___.ravel()',a_x_c_form___.ravel(),'a_x_c_quad_6_',a_x_c_quad_6_,' %%<-- should be small');
+fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad_6_,' %%<-- should be zero');
+#%%%%%%%%;
+
+exit(0);
 
 r'''
 %%%%%%%%;
