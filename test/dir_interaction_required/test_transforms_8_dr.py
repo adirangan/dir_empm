@@ -6,6 +6,8 @@ from dir_empm.get_weight_2d_2 import get_weight_2d_2 ;
 from dir_empm.rotate_p_to_p_fftw import rotate_p_to_p_fftw ;
 from dir_empm.xxnufft3d3 import xxnufft3d3 ;
 from dir_empm.interp_k_p_to_x_c_xxnufft import interp_k_p_to_x_c_xxnufft ;
+from dir_empm.interp_x_c_to_k_p_xxnufft import interp_x_c_to_k_p_xxnufft ;
+from dir_empm.interp_x_c_xxM___to_k_p_wkM__xxnufft import interp_x_c_xxM___to_k_p_wkM__xxnufft ;
 from dir_empm.tfh_FTK_2 import tfh_FTK_2 ;
 from dir_empm.transf_p_to_p import transf_p_to_p ;
 from dir_empm.I_PxxP import I_PxxP ;
@@ -1477,8 +1479,6 @@ fnorm_disp(flag_verbose,'a_x_c_form___.ravel()',a_x_c_form___.ravel(),'a_x_c_qua
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad_6_,' %%<-- should be zero');
 #%%%%%%%%;
 
-exit(0);
-
 r'''
 %%%%%%%%;
 % define rotations in 2d and 3d. ;
@@ -1897,6 +1897,37 @@ M_k_p_wkM__ = torch.zeros(mtr((n_w_sum,n_M))).to(dtype=torch.complex64);
 M_k_p_wkM__ = CTF_k_p_wkC__[index_nCTF_from_nM_,:] * torch.reshape(transf_p_to_p(n_k_p_r,k_p_r_,n_w_,n_w_sum,rotate_p_to_p_fftw(n_k_p_r,n_w_,n_w_sum,S_k_p_wkS__[index_nS_from_nM_,:],gamma_z_[index_nw_from_nM_]),-FTK['r8_delta_x_'][index_nd_from_nM_],-FTK['r8_delta_y_'][index_nd_from_nM_]),mtr((n_w_sum,n_M)));
 M_k_q_wkM__ = torch.reshape(interp_p_to_q(n_k_p_r,n_w_,n_w_sum,M_k_p_wkM__),mtr((n_w_sum,n_M)));
 #%%%%%%%%;
+
+r'''
+%%%%%%%%;
+% quickly test interp_x_c_to_k_p_xxnufft_bach;
+%%%%%%%%;
+M_x_c_xxM_quad___ = zeros(n_x_c,n_x_c,n_M);
+M_k_p_wkM_reco__ = zeros(n_w_sum,n_M);
+for nM=0:n_M-1;
+M_k_p_wk_ = M_k_p_wkM__(:,1+nM);
+M_x_c_xx__ = interp_k_p_to_x_c_xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,n_k_p_r,k_p_r_,n_w_,M_k_p_wk_);
+M_x_c_xxM_quad___(:,:,1+nM) = M_x_c_xx__;
+M_k_p_wkM_reco__(:,1+nM) = interp_x_c_to_k_p_xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,M_x_c_xx__,n_k_p_r,k_p_r_,n_w_);
+end;%for nM=0:n_M-1;
+fnorm_disp(flag_verbose,'M_k_p_wkM__',M_k_p_wkM__,'M_k_p_wkM_reco__',M_k_p_wkM_reco__,'%<-- could be large');
+M_k_p_wkM_rec2__ = interp_x_c_xxM___to_k_p_wkM__xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,n_M,M_x_c_xxM_quad___,n_k_p_r,k_p_r_,n_w_);
+fnorm_disp(flag_verbose,'M_k_p_wkM_reco__',M_k_p_wkM_reco__,'M_k_p_wkM_rec2__',M_k_p_wkM_rec2__,'%<-- should be zero');
+'''
+
+M_x_c_xxM_quad___ = torch.zeros(mtr((n_x_c,n_x_c,n_M))).to(dtype=torch.complex64);
+M_k_p_wkM_reco__ = torch.zeros(mtr((n_w_sum,n_M))).to(dtype=torch.complex64);
+for nM in range(n_M):
+    M_k_p_wk_ = M_k_p_wkM__[nM,:];
+    M_x_c_xx__ = interp_k_p_to_x_c_xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,n_k_p_r,k_p_r_,n_w_,M_k_p_wk_);
+    M_x_c_xxM_quad___[nM,:,:] = M_x_c_xx__;
+    M_k_p_wkM_reco__[nM,:] = interp_x_c_to_k_p_xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,torch.reshape(M_x_c_xx__,mtr((n_x_c,n_x_c))),n_k_p_r,k_p_r_,n_w_);
+#end;%for nM=0:n_M-1;
+fnorm_disp(flag_verbose,'M_k_p_wkM__',M_k_p_wkM__,'M_k_p_wkM_reco__',M_k_p_wkM_reco__,'%<-- could be large');
+M_k_p_wkM_rec2__ = interp_x_c_xxM___to_k_p_wkM__xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,n_M,torch.reshape(M_x_c_xxM_quad___,mtr((n_x_c,n_x_c,n_M))),n_k_p_r,k_p_r_,n_w_);
+fnorm_disp(flag_verbose,'M_k_p_wkM_reco__',M_k_p_wkM_reco__,'M_k_p_wkM_rec2__',M_k_p_wkM_rec2__,'%<-- should be zero');
+
+disp(sprintf(' %% exiting at line 1929')); exit(0);
 
 r'''
 %%%%%%%%;

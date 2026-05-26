@@ -89,7 +89,7 @@ def tfpmhp_Z_wSM___14(
     pm_n_k_p_r = pm_n_UX_rank; pm_n_w_max = n_w_max;
     pm_n_w_ = (pm_n_w_max*torch.ones(pm_n_k_p_r)).to(dtype=torch.int32);
     pm_n_w_sum = int(pm_n_k_p_r*pm_n_w_max);
-    pm_wUX_kn__ = mmmm( torch.diagflat(pm_X_weight_r_).to(dtype=torch.float32) , pm_UX_kn__ );
+    pm_wUX_kn__ = mmmm( diag(pm_X_weight_r_).to(dtype=torch.float32) , pm_UX_kn__ );
 
     #%%%%%%%%;
     #% allocate memory for output. ;

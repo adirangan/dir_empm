@@ -315,7 +315,7 @@ if flag_speed_vs_error==0:
             pm_n_k_p_r = pm_n_UX_rank; pm_n_w_max = n_w_max;
             pm_n_w_ = pm_n_w_max*torch.ones(pm_n_k_p_r).to(dtype=torch.int32);
             pm_n_w_sum = pm_n_k_p_r*pm_n_w_max;
-            pm_wUX_kn__ = mmmm( torch.diagflat(pm_X_weight_r_) , pm_UX_kn__ );
+            pm_wUX_kn__ = mmmm( diag(pm_X_weight_r_) , pm_UX_kn__ );
             tmp_Z_errrel = 0.0;
             tmp_X_errrel = 0.0;
             for nS in range(n_S):

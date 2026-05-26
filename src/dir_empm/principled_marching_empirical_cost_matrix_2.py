@@ -38,7 +38,7 @@ def principled_marching_empirical_cost_matrix_2(
 
     X_weight_r_ = torch.sqrt(weight_2d_k_p_r_).ravel();
 
-    X_kk__ = mmmm( torch.diagflat(X_weight_r_).to(dtype=torch.float32) , mmmm( (2*torch.real(X_00_kk__) - 2*torch.real(X_01_kk__)) , torch.diagflat(X_weight_r_).to(dtype=torch.float32) ) ) ;
+    X_kk__ = mmmm( diag(X_weight_r_).to(dtype=torch.float32) , mmmm( (2*torch.real(X_00_kk__) - 2*torch.real(X_01_kk__)) , diag(X_weight_r_).to(dtype=torch.float32) ) ) ;
 
     if (flag_verbose>0): disp(sprintf(' %% [finished %s]',str_thisfunction)); #end;
     return(

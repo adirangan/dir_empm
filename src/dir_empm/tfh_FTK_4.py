@@ -108,7 +108,7 @@ def tfh_FTK_4(
     tmp_t=toc(tmp_t);
     if (flag_verbose>0): disp(sprintf(' %% c16_svd_expiw__: %0.6fs',tmp_t)); #end;
     tmp_t=tic();
-    FTK['c16_svd_U_d_expiw_s__'] = torch.permute(torch.reshape(FTK['r8_svd_chebval_U_d_'],mtr((FTK['n_svd_l'],FTK['n_delta_v']))), mtr(mts((1,0)))) * mmmm( FTK['c16_svd_expiw__'] , torch.diagflat(FTK['r8_svd_s_']).to(dtype=torch.complex128) );
+    FTK['c16_svd_U_d_expiw_s__'] = torch.permute(torch.reshape(FTK['r8_svd_chebval_U_d_'],mtr((FTK['n_svd_l'],FTK['n_delta_v']))), mtr(mts((1,0)))) * mmmm( FTK['c16_svd_expiw__'] , diag(FTK['r8_svd_s_']).to(dtype=torch.complex128) );
     tmp_t=toc(tmp_t);
     if (flag_verbose>0): disp(sprintf(' %% c16_svd_U_d_expiw_s__: %0.6fs',tmp_t)); #end;
 

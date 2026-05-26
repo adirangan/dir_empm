@@ -33,7 +33,7 @@ def tpmh_VUXM_gpu_lwnM____4(
     tmp_t = tic();
     V_UX_gpu_lrn___ = torch.zeros(mtr((n_svd_l,n_k_p_r,n_UX_rank))).to(dtype=torch.float32,device=device_use);
     for nUX_rank in range(n_UX_rank):
-        V_UX_gpu_lrn___[nUX_rank,:,:] = mmmm( V_gpu_lr__.to(dtype=torch.float32,device=device_use) , torch.diagflat( UX_gpu_rn__[nUX_rank,:].ravel() * X_weight_gpu_r_.ravel() ).to(dtype=torch.float32,device=device_use) ) ;
+        V_UX_gpu_lrn___[nUX_rank,:,:] = mmmm( V_gpu_lr__.to(dtype=torch.float32,device=device_use) , diag( UX_gpu_rn__[nUX_rank,:].ravel() * X_weight_gpu_r_.ravel() ).to(dtype=torch.float32,device=device_use) ) ;
     #end;%for nUX_rank=0:n_UX_rank-1;
     tmp_t = toc(tmp_t);
     if (flag_verbose>0): disp(sprintf(' %% V_UX_gpu_lrn___: time %0.6fs',tmp_t)); #end;

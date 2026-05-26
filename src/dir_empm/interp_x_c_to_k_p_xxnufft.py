@@ -60,20 +60,35 @@ def interp_x_c_to_k_p_xxnufft(
     dx1 = diameter_x1_c / max(1, n_x1) ;
     dx2 = diameter_x2_c / max(1, n_x2) ;
     n_A = int(torch.sum(n_w_).item()) ;
-    k1_ = torch.zeros(n_A) ;
-    k2_ = torch.zeros(n_A) ;
+    k1_ = torch.zeros(n_A).to(dtype=torch.float64) ;
+    k2_ = torch.zeros(n_A).to(dtype=torch.float64) ;
     S_k_p_ = torch.zeros(n_A, dtype=torch.complex128) ;
-    na = 0 ;
-    for nr in range(n_r):
-        r = 2 * pi * grid_k_p_[nr].item() ;
-        for nw in range(int(n_w_[nr].item())):
-            omega = (2 * pi * nw) / max(1, int(n_w_[nr].item())) ;
-            k1_[na] = r * np.cos(omega) * dx1 ;
-            k2_[na] = r * np.sin(omega) * dx2 ;
-            na += 1 ;
-        #end;%for nw in range(int(n_w_[nr].item()));
-    #end;%for nr in range(n_r);
-    if na != n_A: print('Warning, na!=n_A in interp_x_c_to_k_p_xxnufft.py') ;
+    if numel_unique(n_w_)==1:
+        n_w_max = int(torch.max(n_w_).item());
+        n_w_sum = int(torch.sum(n_w_).item());
+        k1_wk__ = torch.zeros(mtr((n_w_sum,n_r))).to(dtype=torch.float64);
+        k2_wk__ = torch.zeros(mtr((n_w_sum,n_r))).to(dtype=torch.float64);
+        omega_w_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float64)/np.maximum(1,n_w_max);
+        k1_wk__ = mmmm(torch.reshape(torch.cos(omega_w_),mtr((n_w_max,1))),torch.reshape(2*pi*grid_k_p_,mtr((1,n_r))));
+        k1_wk_ = k1_wk__.ravel();
+        k2_wk__ = mmmm(torch.reshape(torch.sin(omega_w_),mtr((n_w_max,1))),torch.reshape(2*pi*grid_k_p_,mtr((1,n_r))));
+        k2_wk_ = k2_wk__.ravel();
+        k1_ = k1_wk_*dx1;
+        k2_ = k2_wk_*dx2;
+    #end;%if numel_unique(n_w_)==1:
+    if numel_unique(n_w_)>1:
+        na = 0 ;
+        for nr in range(n_r):
+            r = 2 * pi * grid_k_p_[nr].item() ;
+            for nw in range(int(n_w_[nr].item())):
+                omega = (2 * pi * nw) / max(1, int(n_w_[nr].item())) ;
+                k1_[na] = r * np.cos(omega) * dx1 ;
+                k2_[na] = r * np.sin(omega) * dx2 ;
+                na += 1 ;
+            #end;%for nw in range(int(n_w_[nr].item()));
+        #end;%for nr in range(n_r);
+        if na != n_A: print('Warning, na!=n_A in interp_x_c_to_k_p_xxnufft.py') ;
+    #end;%if numel_unique(n_w_)>1:
     S_k_p_ = xxnufft2d2(n_A, k1_, k2_, iflag, eps, n_x1, n_x2, S_x_c_) ;
     S_k_p_ = S_k_p_ / max(1, np.sqrt(n_x1 * n_x2)) ;
     return S_k_p_ ;

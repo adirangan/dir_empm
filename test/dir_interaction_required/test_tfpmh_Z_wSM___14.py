@@ -232,6 +232,28 @@ if flag_speed_vs_error==0:
                     },
                 );
             #end;%if parameter.flag_optimize_over_gamma_z==0;
+            if parameter['flag_optimize_over_gamma_z']==1:
+                dir_base = '/data/rangan' ;
+                dir_pymat = dir_base + '/dir_cryoem/dir_rangan_python/dir_pymat' ;
+                fname_pymat = dir_pymat + '/test_tfpmh_Z_SM__14.mat' ;
+                disp(sprintf(' %% writing fname_pymat: %s',fname_pymat));
+                matlab_save(
+                    fname_mat=fname_pymat,
+                    dictionary_original= {
+                        "tfpmh_Z_wSM___":tfpmh_Z_wSM___,
+                        "tfpmh_UX_T_M_l2_dM__":tfpmh_UX_T_M_l2_dM__,
+                        "tfpmh_UX_M_l2_M_":tfpmh_UX_M_l2_M_,
+                        "tfpmh_UX_CTF_S_l2_S_":tfpmh_UX_CTF_S_l2_S_,
+                        "tfpmh_X_wSM___":tfpmh_X_wSM___,
+                        "tfpmh_delta_x_wSM___":tfpmh_delta_x_wSM___,
+                        "tfpmh_delta_y_wSM___":tfpmh_delta_y_wSM___,
+                        "tfpmh_gamma_z_wSM___":tfpmh_gamma_z_wSM___,
+                        "tfpmh_index_sub_wSM___":tfpmh_index_sub_wSM___,
+                        "tfpmh_Z_dwSM____":tfpmh_Z_dwSM____,
+                        "tfpmh_X_dwSM____":tfpmh_X_dwSM____,
+                    },
+                );
+            #end;%if parameter.flag_optimize_over_gamma_z==1;
             #%%%%%%%%;
             #% check. ;
             #%%%%%%%%;
@@ -239,7 +261,7 @@ if flag_speed_vs_error==0:
             pm_n_k_p_r = pm_n_UX_rank; pm_n_w_max = n_w_max;
             pm_n_w_ = pm_n_w_max*torch.ones(pm_n_k_p_r).to(dtype=torch.int32);
             pm_n_w_sum = pm_n_k_p_r*pm_n_w_max;
-            pm_wUX_kn__ = mmmm( torch.diagflat(pm_X_weight_r_) , pm_UX_kn__ );
+            pm_wUX_kn__ = mmmm( diag(pm_X_weight_r_) , pm_UX_kn__ );
             tmp_Z_errrel = 0.0;
             tmp_X_errrel = 0.0;
             for nS in range(n_S):

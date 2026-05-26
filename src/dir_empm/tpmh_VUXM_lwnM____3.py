@@ -27,7 +27,7 @@ def tpmh_VUXM_lwnM____3(
     if (flag_verbose>0): print(f' %% V_r__ %0.6fs',tmp_t);
     V_UX_lrn___ = torch.zeros(mtr((FTK['n_svd_l'],n_k_p_r,n_UX_rank))).to(dtype=torch.float32);
     for nUX_rank in range(n_UX_rank):
-        V_UX_lrn___[nUX_rank,:,:] = mmmm( V_r__ , torch.diagflat( UX__[nUX_rank,:].ravel() * X_weight_r_.ravel() ).to(dtype=torch.float32) ) ;
+        V_UX_lrn___[nUX_rank,:,:] = mmmm( V_r__ , diag( UX__[nUX_rank,:].ravel() * X_weight_r_.ravel() ).to(dtype=torch.float32) ) ;
     #end;%for nUX_rank=0:n_UX_rank-1;
     V_UX_nrl___ = torch.permute(V_UX_lrn___,mtr(mts((2,1,0))));
     #%%%%%%%%;

@@ -10,6 +10,8 @@ cell = lambda n: [ [] for _ in range(n) ] ; #%<-- cell array. ;
 isempty = lambda t: (t is None) or (isinstance(t, torch.Tensor) and t.numel() == 0) ;
 numel_unique = lambda a : np.unique(a.numpy().ravel()).size ;
 numel = lambda a : int(a.numel()) ;
+max_0 = lambda a : int(torch.max(n_w_).item()) ;
+sum_0 = lambda a : int(torch.sum(n_w_).item()) ;
 cumsum_0 = lambda a : torch.cumsum(torch.concatenate((torch.tensor([0]),a)) , 0).to(torch.int32) ;
 fnorm = lambda a : torch.linalg.norm(a).item() ;
 ndims = lambda a : a.ndim ;
@@ -31,6 +33,7 @@ n_byte_per_complex64 = 8; n_byte_per_complex128 = 16;
 np_sparse = lambda nr_,nc_,v_,n_r,n_c : csr_matrix( ( v_.numpy(),(nc_.numpy(),nr_.numpy()) ) , shape=(n_c,n_r) ) ; #<-- note matlab-arranged dimensions. ;
 m_npcsr_mm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(B.numpy().T).T),mtr((size(np_csr_A,0),size(B,1)))) ; #<-- note extra transposes to match matlab. ;
 m_npcsr_vm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(torch.reshape(B.ravel(),mtr((numel(B.ravel()),1))).numpy().T).T),mtr((size(np_csr_A,0),n_1))).ravel() ; #<-- note extra transposes to match matlab. ;
+diag = lambda A : torch.diagflat(A) ; #<-- matlab diag. ;
 
 from . matlab_index_2d_0 import matlab_index_2d_0 ;
 from . matlab_index_3d_0 import matlab_index_3d_0 ;
