@@ -1443,6 +1443,7 @@ fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad
 '''
 
 tmp_t = tic();
+flag_u_vs_c = 0; #<-- This implies a centered grid for x_c_. ;
 if 'sqrt_2lp1_' not in locals(): sqrt_2lp1_ = None; #end;
 if 'sqrt_2mp1_' not in locals(): sqrt_2mp1_ = None; #end;
 if 'sqrt_rat0_m_' not in locals(): sqrt_rat0_m_ = None; #end;
@@ -1472,12 +1473,15 @@ if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
     sqrt_rat0_m_,
     sqrt_rat3_lm__,
     sqrt_rat4_lm__,
+    flag_u_vs_c,
 );
 tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_6_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_x_c_form___.ravel()',a_x_c_form___.ravel(),'a_x_c_quad_6_',a_x_c_quad_6_,' %%<-- should be small');
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad_6_,' %%<-- should be zero');
 #%%%%%%%%;
+
+#disp(sprintf(' %% exiting at line 1483')); exit(0);
 
 r'''
 %%%%%%%%;
@@ -1927,7 +1931,7 @@ fnorm_disp(flag_verbose,'M_k_p_wkM__',M_k_p_wkM__,'M_k_p_wkM_reco__',M_k_p_wkM_r
 M_k_p_wkM_rec2__ = interp_x_c_xxM___to_k_p_wkM__xxnufft(n_x_c,diameter_x_c,n_x_c,diameter_x_c,n_M,torch.reshape(M_x_c_xxM_quad___,mtr((n_x_c,n_x_c,n_M))),n_k_p_r,k_p_r_,n_w_);
 fnorm_disp(flag_verbose,'M_k_p_wkM_reco__',M_k_p_wkM_reco__,'M_k_p_wkM_rec2__',M_k_p_wkM_rec2__,'%<-- should be zero');
 
-disp(sprintf(' %% exiting at line 1929')); exit(0);
+#disp(sprintf(' %% exiting at line 1933')); exit(0);
 
 r'''
 %%%%%%%%;

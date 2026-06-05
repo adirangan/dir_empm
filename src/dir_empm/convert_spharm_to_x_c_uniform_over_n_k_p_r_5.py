@@ -13,26 +13,46 @@ def convert_spharm_to_x_c_uniform_over_n_k_p_r_5(
         l_max_=None,
         a_k_Y_yk_=None,
         half_diameter_x_c=None,
-        n_x_u_pack=None,
+        n_x_g_pack=None,
         sqrt_2lp1_=None,
         sqrt_2mp1_=None,
         sqrt_rat0_m_=None,
         sqrt_rat3_lm__=None,
         sqrt_rat4_lm__=None,
+        flag_u_vs_c=None,
 ):
     str_thisfunction = 'convert_spharm_to_x_c_uniform_over_n_k_p_r_5';
     if (flag_verbose>0): disp(sprintf(' %% [entering %s]',str_thisfunction)); #end;
 
     if isempty(half_diameter_x_c): half_diameter_x_c = 1.0; #end;
-    if isempty(n_x_u_pack): n_x_u_pack = 64; #end;
+    if isempty(n_x_g_pack): n_x_g_pack = 64; #end;
+    if isempty(flag_u_vs_c): flag_u_vs_c = 1; #end;
 
     diameter_x_c = 2.0*half_diameter_x_c;
     x_p_r_max = half_diameter_x_c;
-    x_u_0_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack).to(dtype=torch.float32);
-    x_u_1_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack).to(dtype=torch.float32);
-    x_u_2_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack).to(dtype=torch.float32);
-    x_u_2___, x_u_1___, x_u_0___ = torch.meshgrid(x_u_2_, x_u_1_, x_u_0_, indexing='ij') ; n_xxx_u = n_x_u_pack ** 3 ; #<-- reversed to match matlab. ;
-    a_x_u_xxx_ = torch.zeros(n_xxx_u).to(dtype=torch.complex64);
+    if flag_u_vs_c==0:
+        n_x_c_pack = n_x_g_pack;
+        x_c_0_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_c_pack).to(dtype=torch.float32);
+        x_c_1_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_c_pack).to(dtype=torch.float32);
+        x_c_2_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_c_pack).to(dtype=torch.float32);
+        x_c_2___, x_c_1___, x_c_0___ = torch.meshgrid(x_c_2_, x_c_1_, x_c_0_, indexing='ij') ; n_xxx_c = n_x_c_pack ** 3 ; #<-- reversed to match matlab. ;
+        n_xxx_g = n_xxx_c;
+        x_g_0___ = x_c_0___;
+        x_g_1___ = x_c_1___;
+        x_g_2___ = x_c_2___;
+    #end;%if flag_u_vs_c==0:
+    if flag_u_vs_c==1:
+        n_x_u_pack = n_x_g_pack;
+        x_u_0_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack+1).to(dtype=torch.float32)[:-1];
+        x_u_1_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack+1).to(dtype=torch.float32)[:-1];
+        x_u_2_ = torch.linspace(-x_p_r_max,+x_p_r_max,n_x_u_pack+1).to(dtype=torch.float32)[:-1];
+        x_u_2___, x_u_1___, x_u_0___ = torch.meshgrid(x_u_2_, x_u_1_, x_u_0_, indexing='ij') ; n_xxx_u = n_x_u_pack ** 3 ; #<-- reversed to match matlab. ;
+        n_xxx_g = n_xxx_u;
+        x_g_0___ = x_u_0___;
+        x_g_1___ = x_u_1___;
+        x_g_2___ = x_u_2___;
+    #end;%if flag_u_vs_c==1:
+    a_x_g_xxx_ = torch.zeros(n_xxx_g).to(dtype=torch.complex64);
     
     tmp_t=tic();
     (
@@ -102,7 +122,7 @@ def convert_spharm_to_x_c_uniform_over_n_k_p_r_5(
         #%%%%%%%%;
         tmp_t=tic();
         eta = pi/k_p_r_max;
-        a_x_u_xxx_ = xxnufft3d3(
+        a_x_g_xxx_ = xxnufft3d3(
             n_qk,
             2*pi*k_c_0_qk_*eta,
             2*pi*k_c_1_qk_*eta,
@@ -110,13 +130,13 @@ def convert_spharm_to_x_c_uniform_over_n_k_p_r_5(
             a_k_p_qk_*weight_3d_k_p_qk_,
             +1,
             1e-12,
-            n_xxx_u,
-            x_u_0___.ravel()/eta,
-            x_u_1___.ravel()/eta,
-            x_u_2___.ravel()/eta,
+            n_xxx_g,
+            x_g_0___.ravel()/eta,
+            x_g_1___.ravel()/eta,
+            x_g_2___.ravel()/eta,
         );
         tmp_t = toc(tmp_t);
-        if (flag_verbose>0): disp(sprintf(' %% a_k_p_qk_ --> a_x_u_xxx_ time %0.2fs',tmp_t)); #end;
+        if (flag_verbose>0): disp(sprintf(' %% a_k_p_qk_ --> a_x_g_xxx_ time %0.2fs',tmp_t)); #end;
         #%%%%%%%%%%%%%%%%;
         # end;%if flag_continue==1;
         #%%%%%%%%%%%%%%%%;
@@ -124,7 +144,7 @@ def convert_spharm_to_x_c_uniform_over_n_k_p_r_5(
     if (flag_verbose>0): disp(sprintf(' %% [finished %s]',str_thisfunction)); #end;
     
     return(
-        a_x_u_xxx_,
+        a_x_g_xxx_,
         a_k_p_qk_,
         sqrt_2lp1_,
         sqrt_2mp1_,
