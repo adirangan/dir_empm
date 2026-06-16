@@ -47,5 +47,5 @@ def niko_ctf(
     chi_ = c1_*df_ + c2_;
     ctfv_ = -w1*torch.sin(chi_) - w2*torch.cos(chi_);
     output_ = ctfv_;
-    return output_;
+    return(output_,chi_);
 

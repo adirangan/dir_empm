@@ -60,8 +60,9 @@ def CTF_k_p_wkC__from_params_0(
         tmp_w2=CTF_Amplitude_Contrast;#% weights for the amplitude and phase contrasts in CTF ;
         #%  CTF_Object_Pixel_Size = CTF_Detector_Pixel_Size/np.maximum(1e-24,CTF_Magnification);
         CTF_Object_Pixel_Size = Pixel_Spacing;#% pixel size of the scanner in physical space in Angstroms ;
-        CTF_lambda_per_box = CTF_lambda/np.maximum(1e-24,n_Pixels_across*CTF_Object_Pixel_Size);#% n_Pixels_across*CTF_Object_Pixel_Size is the box size in Angstroms ;
-        CTF_k_p_wkC__[nCTF,:] = -niko_ctf(CTF_Spherical_Aberration,CTF_lambda,tmp_w1,tmp_w2,CTF_Defocus_U,CTF_Defocus_V,CTF_Defocus_Angle,CTF_lambda_per_box/pi,k_c_0_,k_c_1_);
+        CTF_lambda_BoxSide = CTF_lambda/np.maximum(1e-24,n_Pixels_across*CTF_Object_Pixel_Size);#% n_Pixels_across*CTF_Object_Pixel_Size is the box size in Angstroms ;
+        (tmp_ctfv,) = niko_ctf(CTF_Spherical_Aberration,CTF_lambda,tmp_w1,tmp_w2,CTF_Defocus_U,CTF_Defocus_V,CTF_Defocus_Angle,CTF_lambda_BoxSide/pi,k_c_0_,k_c_1_)[:1];
+        CTF_k_p_wkC__[nCTF,:] = -tmp_ctfv;
     #end;%for nCTF=0:n_CTF-1;
 
     return CTF_k_p_wkC__;
