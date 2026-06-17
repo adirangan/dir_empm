@@ -190,7 +190,7 @@ fnorm_disp(flag_verbose,'a_x_u_form_l2',a_x_u_form_l2,'a_x_u_quad_l2',a_x_u_quad
 fnorm_disp(flag_verbose,'b_x_u_form_l2',b_x_u_form_l2,'b_x_u_quad_l2',b_x_u_quad_l2,'%<-- should be small');
 
 #%%%%%%%%;
-#% Now test gaussian. ;
+#% Now test gaussian on centered grid. ;
 #%%%%%%%%;
 tmp_sigma_x_c = 0.0625;
 tmp_sigma_k_p = 1/tmp_sigma_x_c;
@@ -223,4 +223,39 @@ tmp_M_x_c_reco_ = interp_k_p_to_x_c_xxnufft(n_x_M_c,diameter_x_c,n_x_M_c,diamete
 tmp_M_x_c_reco_l2 = torch.sum(torch.abs(tmp_M_x_c_reco_)**2).item()*dx_c**2;
 disp(sprintf(' %% tmp_M_x_c_reco_l2 = %0.16f',tmp_M_x_c_reco_l2));
 fnorm_disp(flag_verbose,'tmp_M_x_c_form_',tmp_M_x_c_form_,'tmp_M_x_c_reco_',tmp_M_x_c_reco_,'%<-- should be moderate (since cartesian quadrature is not good)');
+
+#%%%%%%%%;
+#% Now test gaussian on uncentered grid. ;
+#%%%%%%%%;
+tmp_sigma_x_u = 0.0625 + 0.0125; #%<-- to differentiate from centered version. ;
+tmp_sigma_k_p = 1/tmp_sigma_x_u;
+tmp_delta_ = torch.zeros(2).to(dtype=torch.float32); tmp_delta_[0] = 0.75*(+0.15); tmp_delta_[1] = 0.75*(-0.18); #%<-- to differentiate from centered version. ;
+tmp_M_x_u_form_ = 1/(np.sqrt(2*pi)*tmp_sigma_x_u)**2 * torch.exp( -( (x_u_0__-tmp_delta_[0].item())**2 + (x_u_1__-tmp_delta_[1].item())**2 ) / (2*tmp_sigma_x_u**2) );
+tmp_M_x_u_form_l2 = torch.sum(tmp_M_x_u_form_.ravel()**2).item()*dx_u**2;
+disp(sprintf(' %% sum(tmp_M_x_u_form_*dx_u**2,''all'') = %0.16f',torch.sum(tmp_M_x_u_form_.ravel()*dx_u**2).item()));
+disp(sprintf(' %% tmp_M_x_u_form_l2 = %0.16f',tmp_M_x_u_form_l2));
+flag_u_vs_c = 1;
+tmp_M_k_p_quad_ = interp_x_c_to_k_p_xxnufft(n_x_M_u,diameter_x_u,n_x_M_u,diameter_x_u,tmp_M_x_u_form_,n_k_p_r,k_p_r_,n_w_,flag_u_vs_c)*np.sqrt(n_x_M_u**2)*dx_u**2;
+tmp_M_k_p_quad_l2 = torch.sum(torch.abs(tmp_M_k_p_quad_)**2 * weight_2d_wk_).item() * (2*pi)**2;
+disp(sprintf(' %% tmp_M_k_p_quad_l2 = %0.16f',tmp_M_k_p_quad_l2));
+tmp_M_k_p_form_ = torch.zeros(n_w_sum).to(dtype=torch.complex64);
+na=0;
+for nk_p_r in range(n_k_p_r):
+    k_p_r = k_p_r_[nk_p_r].item();
+    n_w = int(n_w_[nk_p_r].item());
+    for nw in range(n_w):
+        k_x_c_0 = k_p_r*np.cos(2*pi*nw/n_w);
+        k_x_c_1 = k_p_r*np.sin(2*pi*nw/n_w);
+        tmp_M_k_p_form_[na] = np.exp( -( (2*pi*k_x_c_0)**2 + (2*pi*k_x_c_1)**2 ) / (2/tmp_sigma_x_u**2) ) * np.exp( - 2*pi*i*( k_x_c_0*tmp_delta_[0].item() + k_x_c_1*tmp_delta_[1].item() ) );
+        na=na+1;
+    #end;%for nw in range(n_w):
+#end;%for nk_p_r in range(n_k_p_r):
+tmp_M_k_p_form_l2 = torch.sum(torch.abs(tmp_M_k_p_form_)**2 * weight_2d_wk_).item() * (2*pi)**2;
+disp(sprintf(' %% tmp_M_k_p_form_l2 = %0.16f',tmp_M_k_p_form_l2));
+fnorm_disp(flag_verbose,'tmp_M_k_p_form_',tmp_M_k_p_form_,'tmp_M_k_p_quad_',tmp_M_k_p_quad_,'%<-- should be small');
+flag_u_vs_c = 1;
+tmp_M_x_u_reco_ = interp_k_p_to_x_c_xxnufft(n_x_M_u,diameter_x_u,n_x_M_u,diameter_x_u,n_k_p_r,k_p_r_,n_w_,tmp_M_k_p_quad_*weight_2d_wk_*(2*pi)**2,flag_u_vs_c)*np.sqrt(n_x_M_u**2) * n_w_sum;
+tmp_M_x_u_reco_l2 = torch.sum(torch.abs(tmp_M_x_u_reco_)**2).item()*dx_u**2;
+disp(sprintf(' %% tmp_M_x_u_reco_l2 = %0.16f',tmp_M_x_u_reco_l2));
+fnorm_disp(flag_verbose,'tmp_M_x_u_form_',tmp_M_x_u_form_,'tmp_M_x_u_reco_',tmp_M_x_u_reco_,'%<-- should be moderate (since cartesian quadrature is not good)');
 
