@@ -28,7 +28,7 @@ x_c_0_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_c).to(torch.float32); d_x_c_
 x_c_1_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_c).to(torch.float32); d_x_c_1 = x_c_1_[1].item()-x_c_1_[0].item();
 x_c_2_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_c).to(torch.float32); d_x_c_2 = x_c_2_[1].item()-x_c_2_[0].item();
 x_c_2___, x_c_1___, x_c_0___ = torch.meshgrid(x_c_2_, x_c_1_, x_c_0_, indexing='ij') ; n_xxx_c = n_x_c ** 3 ; #<-- reversed to match matlab. ;
-weight_xxx_c = d_x_c_0 * d_x_c_1 * d_x_c_2 ;
+weight_xxx_c = torch.zeros(1).to(torch.float32); weight_xxx_c[0] = d_x_c_0 * d_x_c_1 * d_x_c_2 ;
 #%%%%%%%%;
 # Define spatial grid (uncentered).
 n_x_u = n_x_c;
@@ -36,7 +36,7 @@ x_u_0_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_u+1).to(torch.float32)[:-1];
 x_u_1_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_u+1).to(torch.float32)[:-1]; d_x_u_1 = x_u_1_[1].item()-x_u_1_[0].item();
 x_u_2_ = torch.linspace(-x_p_r_max, +x_p_r_max, n_x_u+1).to(torch.float32)[:-1]; d_x_u_2 = x_u_2_[1].item()-x_u_2_[0].item();
 x_u_2___, x_u_1___, x_u_0___ = torch.meshgrid(x_u_2_, x_u_1_, x_u_0_, indexing='ij') ; n_xxx_u = n_x_u ** 3 ; #<-- reversed to match matlab. ;
-weight_xxx_u = d_x_u_0 * d_x_u_1 * d_x_u_2 ;
+weight_xxx_u = torch.zeros(1).to(torch.float32); weight_xxx_u[0] = d_x_u_0 * d_x_u_1 * d_x_u_2 ;
 #%%%%%%%%;
 
 # Set up k-quadrature on sphere.
@@ -200,7 +200,7 @@ for nsource in range(n_source):
     tmp_h3d___[torch.abs(tmp_kd___)<=1e-12] = 4*pi/3 ;
     a_x_c_form___ += tmp_h3d___*k_p_r_max**3 ;
 #end;%for nsource in range(n_source);
-a_x_c_l2_quad = torch.sum(torch.abs(a_x_c_form___) ** 2 , (0,1,2) ).item() * weight_xxx_c;
+a_x_c_l2_quad = torch.sum(torch.abs(a_x_c_form___) ** 2 , (0,1,2) ).item() * weight_xxx_c.item();
 print(f" %% Note l2-loss: a_x_c_l2_quad {a_x_c_l2_quad:+0.6f} vs a_k_p_l2_form {a_k_p_l2_form:+0.6f}");
 b_x_c_form___ = torch.zeros((n_x_c, n_x_c, n_x_c)).to(dtype=torch.float32);
 for nsource in range(n_source):
@@ -209,7 +209,7 @@ for nsource in range(n_source):
     tmp_h3d___ = h3d(tmp_kd___) ; tmp_h3d___[torch.abs(tmp_kd___)<=1e-12] = 4*pi/3 ;
     b_x_c_form___ += tmp_h3d___*k_p_r_max**3 ;
 #end;%for nsource in range(n_source);
-b_x_c_l2_quad = torch.sum(torch.abs(b_x_c_form___) ** 2 , (0,1,2) ).item() * weight_xxx_c;
+b_x_c_l2_quad = torch.sum(torch.abs(b_x_c_form___) ** 2 , (0,1,2) ).item() * weight_xxx_c.item();
 print(f" %% Note l2-loss: b_x_c_l2_quad {b_x_c_l2_quad:+0.6f} vs b_k_p_l2_form {b_k_p_l2_form:+0.6f}");
 # Using the k-quadrature on the sphere we can also determine the real-space function a_x_u_form___ analytically.
 a_x_u_form___ = torch.zeros((n_x_u, n_x_u, n_x_u)).to(dtype=torch.float32);
@@ -220,7 +220,7 @@ for nsource in range(n_source):
     tmp_h3d___[torch.abs(tmp_kd___)<=1e-12] = 4*pi/3 ;
     a_x_u_form___ += tmp_h3d___*k_p_r_max**3 ;
 #end;%for nsource in range(n_source);
-a_x_u_l2_quad = torch.sum(torch.abs(a_x_u_form___) ** 2 , (0,1,2) ).item() * weight_xxx_u;
+a_x_u_l2_quad = torch.sum(torch.abs(a_x_u_form___) ** 2 , (0,1,2) ).item() * weight_xxx_u.item();
 print(f" %% Note l2-loss: a_x_u_l2_quad {a_x_u_l2_quad:+0.6f} vs a_k_p_l2_form {a_k_p_l2_form:+0.6f}");
 
 # Note that, due to the l2-loss,
@@ -246,6 +246,7 @@ a_x_c_quad___ = xxnufft3d3(
 tmp_t = toc(tmp_t);
 if flag_verbose: print(f' %% xxnufft3d3: a_x_c_quad___: {tmp_t:0.6f}s');
 fnorm_disp(flag_verbose,'a_x_c_form___',a_x_c_form___,'a_x_c_quad___',a_x_c_quad___,'');
+fnorm_disp(flag_verbose,'a_x_c_form___*sqrt(weight_xxx_c)',a_x_c_form___*torch.sqrt(weight_xxx_c),'a_x_c_quad___*sqrt(weight_xxx_c)',a_x_c_quad___*torch.sqrt(weight_xxx_c),'');
 # Here we calculate the reconstruction loss going from a_x_c_form___ back to a_k_p_quad_. ;
 eta = pi / x_p_r_max ;
 tmp_t = tic();
@@ -265,6 +266,7 @@ a_k_p_quad_ = xxnufft3d3(
 tmp_t = toc(tmp_t);
 if flag_verbose: print(f' %% xxnufft3d3: a_k_p_quad_: {tmp_t:0.6f}s');
 fnorm_disp(flag_verbose,'a_k_p_form_',a_k_p_form_,'a_k_p_quad_',a_k_p_quad_,' %%<-- can be large (bandlimited)');
+fnorm_disp(flag_verbose,'a_k_p_form_*sqrt(weight_3d_k_p_qk_)',a_k_p_form_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_quad_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- can be large (bandlimited)');
 
 # Here we calculate the reconstruction loss going from b_k_p_form_ back to b_x_c_quad___. ;
 eta = pi / k_p_r_max ;
@@ -285,6 +287,7 @@ b_x_c_quad___ = xxnufft3d3(
 tmp_t = toc(tmp_t);
 if flag_verbose: print(f' %% xxnufft3d3: b_x_c_quad___: {tmp_t:0.6f}s');
 fnorm_disp(flag_verbose,'b_x_c_form___',b_x_c_form___,'b_x_c_quad___',b_x_c_quad___,'');
+fnorm_disp(flag_verbose,'b_x_c_form___*sqrt(weight_xxx_c)',b_x_c_form___*torch.sqrt(weight_xxx_c),'b_x_c_quad___*sqrt(weight_xxx_c)',b_x_c_quad___*torch.sqrt(weight_xxx_c),'');
 # Here we calculate the reconstruction loss going from b_x_c_form___ back to b_k_p_quad_. ;
 eta = pi / x_p_r_max ;
 tmp_t = tic();
@@ -304,6 +307,7 @@ b_k_p_quad_ = xxnufft3d3(
 tmp_t = toc(tmp_t);
 if flag_verbose: print(f' %% xxnufft3d3: b_k_p_quad_: {tmp_t:0.6f}s');
 fnorm_disp(flag_verbose,'b_k_p_form_',b_k_p_form_,'b_k_p_quad_',b_k_p_quad_,' %%<-- can be large (bandlimited)');
+fnorm_disp(flag_verbose,'b_k_p_form_*sqrt(weight_3d_k_p_qk_)',b_k_p_form_*torch.sqrt(weight_3d_k_p_qk_),'b_k_p_quad_*sqrt(weight_3d_k_p_qk_)',b_k_p_quad_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- can be large (bandlimited)');
 
 # Now set up spherical-harmonics. ;
 l_max_upb = matlab_scalar_round(2 * pi * k_p_r_max) ;
@@ -390,6 +394,7 @@ if 'index_k_per_shell_uka__' not in locals(): index_k_per_shell_uka__ = None ;
 tmp_t = toc(tmp_t); print(f' %% a_k_Y_quad_ time {tmp_t:.2f}s');
 # And we compare the results. ;
 fnorm_disp(flag_verbose,'a_k_Y_form_',a_k_Y_form_,'a_k_Y_quad_',a_k_Y_quad_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_Y_form_*sqrt(weight_Y_)',a_k_Y_form_*torch.sqrt(weight_Y_),'a_k_Y_quad_*sqrt(weight_Y_)',a_k_Y_quad_*torch.sqrt(weight_Y_),' %%<-- should be <1e-2');
 # We do the same for the reverse transformation. ;
 tmp_t = tic();
 (
@@ -417,6 +422,7 @@ tmp_t = tic();
 )[:1];
 tmp_t = toc(tmp_t); print(f' %% a_k_p_quad_ time {tmp_t:.2f}s');
 fnorm_disp(flag_verbose,'a_k_p_form_',a_k_p_form_,'a_k_p_quad_',a_k_p_quad_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_p_form_*sqrt(weight_3d_k_p_qk_)',a_k_p_form_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_quad_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be <1e-2');
 # And we test the reconstruction error (i.e., for a round-trip back to a_k_p_). ;
 tmp_t = tic();
 (
@@ -444,7 +450,9 @@ tmp_t = tic();
 )[:1];
 tmp_t = toc(tmp_t); print(f' %% a_k_p_reco_ time {tmp_t:.2f}s');
 fnorm_disp(flag_verbose,'a_k_p_form_',a_k_p_form_,'a_k_p_reco_',a_k_p_reco_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_p_form_*sqrt(weight_3d_k_p_qk_)',a_k_p_form_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_reco_*sqrt(weight_3d_k_p_qk_)',a_k_p_reco_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be <1e-2');
 fnorm_disp(flag_verbose,'a_k_p_quad_',a_k_p_quad_,'a_k_p_reco_',a_k_p_reco_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_p_quad_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_reco_*sqrt(weight_3d_k_p_qk_)',a_k_p_reco_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be <1e-2');
 # And we test the reconstruction error (i.e., for a round-trip back to a_k_Y_). ;
 tmp_t = tic();
 (
@@ -472,7 +480,9 @@ tmp_t = tic();
 )[:1];
 tmp_t = toc(tmp_t); print(f' %% a_k_Y_reco_ time {tmp_t:.2f}s');
 fnorm_disp(flag_verbose,'a_k_Y_form_',a_k_Y_form_,'a_k_Y_reco_',a_k_Y_reco_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_Y_form_*sqrt(weight_Y_)',a_k_Y_form_*torch.sqrt(weight_Y_),'a_k_Y_reco_*sqrt(weight_Y_)',a_k_Y_reco_*torch.sqrt(weight_Y_),' %%<-- should be <1e-2');
 fnorm_disp(flag_verbose,'a_k_Y_quad_',a_k_Y_quad_,'a_k_Y_reco_',a_k_Y_reco_,' %%<-- should be <1e-2');
+fnorm_disp(flag_verbose,'a_k_Y_quad_*sqrt(weight_Y_)',a_k_Y_quad_*torch.sqrt(weight_Y_),'a_k_Y_reco_*sqrt(weight_Y_)',a_k_Y_reco_*torch.sqrt(weight_Y_),' %%<-- should be <1e-2');
 
 # Now we compare the results of convert_k_p_to_spharm_4 with convert_k_p_to_spharm_uniform_over_n_k_p_r_5. ;
 tmp_t = tic();
@@ -549,6 +559,7 @@ if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
 tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_Y_quad_5_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_k_Y_quad_4_',a_k_Y_quad_4_,'a_k_Y_quad_5_',a_k_Y_quad_5_,' %%<-- should be zero');
+fnorm_disp(flag_verbose,'a_k_Y_quad_4_*sqrt(weight_Y_)',a_k_Y_quad_4_*torch.sqrt(weight_Y_),'a_k_Y_quad_5_*sqrt(weight_Y_)',a_k_Y_quad_5_*torch.sqrt(weight_Y_),' %%<-- should be zero');
 #%%%%%%%%;
 
 # Now we compare the results of convert_spharm_to_k_p_4 with convert_spharm_to_k_p_uniform_over_n_k_p_r_5. ;
@@ -626,6 +637,7 @@ if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
 tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_5_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_5_',a_k_p_quad_5_,' %%<-- should be zero');
+fnorm_disp(flag_verbose,'a_k_p_quad_4_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_4_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_quad_5_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_5_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be zero');
 #%%%%%%%%;
 
 # Now we finally test out convert_spharm_to_x_c_uniform_over_n_k_p_r_5 for a centered grid. ;
@@ -665,7 +677,9 @@ if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
 tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_6_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_x_c_form___.ravel()',a_x_c_form___.ravel(),'a_x_c_quad_6_',a_x_c_quad_6_,' %%<-- should be small');
+fnorm_disp(flag_verbose,'a_x_c_form___.ravel()*sqrt(weight_xxx_c)',a_x_c_form___.ravel()*torch.sqrt(weight_xxx_c),'a_x_c_quad_6_*sqrt(weight_xxx_c)',a_x_c_quad_6_*torch.sqrt(weight_xxx_c),' %%<-- should be small');
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_6_',a_k_p_quad_6_,' %%<-- should be zero');
+fnorm_disp(flag_verbose,'a_k_p_quad_4_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_4_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_quad_6_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_6_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be zero');
 #%%%%%%%%;
 
 # Now we finally test out convert_spharm_to_x_c_uniform_over_n_k_p_r_5 for an uncentered grid. ;
@@ -705,6 +719,8 @@ if 'sqrt_rat4_lm__' not in locals(): sqrt_rat4_lm__ = None; #end;
 tmp_t = toc(tmp_t); disp(sprintf(' %% a_k_p_quad_7_ time %0.2fs',tmp_t));
 #%%%%%%%%;
 fnorm_disp(flag_verbose,'a_x_u_form___.ravel()',a_x_u_form___.ravel(),'a_x_u_quad_7_',a_x_u_quad_7_,' %%<-- should be small');
+fnorm_disp(flag_verbose,'a_x_u_form___.ravel()*sqrt(weight_xxx_u)',a_x_u_form___.ravel()*torch.sqrt(weight_xxx_u),'a_x_u_quad_7_*sqrt(weight_xxx_u)',a_x_u_quad_7_*torch.sqrt(weight_xxx_u),' %%<-- should be small');
 fnorm_disp(flag_verbose,'a_k_p_quad_4_',a_k_p_quad_4_,'a_k_p_quad_7_',a_k_p_quad_7_,' %%<-- should be zero');
+fnorm_disp(flag_verbose,'a_k_p_quad_4_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_4_*torch.sqrt(weight_3d_k_p_qk_),'a_k_p_quad_7_*sqrt(weight_3d_k_p_qk_)',a_k_p_quad_7_*torch.sqrt(weight_3d_k_p_qk_),' %%<-- should be zero');
 #%%%%%%%%;
 
