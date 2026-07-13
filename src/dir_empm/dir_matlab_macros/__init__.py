@@ -9,6 +9,7 @@ __all__ = [
     "csr_matrix",
     "savemat",
     "loadmat",
+    "linenumber_here",
     "rng",
     "cell",
     "isempty",
@@ -20,6 +21,8 @@ __all__ = [
     "fnorm",
     "ndims",
     "size",
+    "flipud",
+    "fliplr",
     "mtr",
     "msr",
     "mts",
@@ -52,6 +55,7 @@ __all__ = [
     "sprintf",
     "fnorm_disp",
     "unique_0",
+    "unique_1",
     "intersect_0",
     "union_0",
     "setdiff_0",
@@ -61,6 +65,9 @@ __all__ = [
     "matlab_save",
     "matlab_load",
     "matlab_assign_lhs_from_rhs_",
+    "matlab_chebpts_0",
+    "matlab_chebpts_1",
+    "matlab_interp1_0",
 ];
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;

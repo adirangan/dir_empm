@@ -64,7 +64,7 @@ def convert_spharm_to_k_p_uniform_over_n_k_p_r_5(
 
     k_p_azimu_b_q_ = k_p_azimu_b_qk__[0,:].ravel();
     k_p_polar_a_q_ = k_p_polar_a_qk__[0,:].ravel();
-    k_p_polar_a_unique_,index_unique_,index_return_ = unique_0(k_p_polar_a_q_); 
+    k_p_polar_a_unique_,index_unique_,index_return_ = unique_1(k_p_polar_a_q_); 
     n_polar_a_unique = numel(k_p_polar_a_unique_);
     l_max_max = int(torch.max(l_max_).item());
     if 'sqrt_2lp1_' not in locals(): sqrt_2lp1_=None; #end;

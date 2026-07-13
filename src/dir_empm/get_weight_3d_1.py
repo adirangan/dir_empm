@@ -41,9 +41,10 @@ def get_weight_3d_1(flag_verbose=None, k_p_r_max=None, k_eq_d=None, str_T_vs_L=N
     a_jw_ = torch.tensor(np_a_jw_).to(dtype=torch.float32);
     k_p_r_ = torch.reshape((a_jx_ + 1.0) * k_p_r_max / 2, (n_k_p_r,) ).to(dtype=torch.float32) ;
     weight_3d_k_p_r_ = torch.reshape(a_jw_ * (k_p_r_max / 2) ** 3, (n_k_p_r,) ).to(dtype=torch.float32) ;
-
+    weight_2d_k_p_r_ = 2*pi*torch.reshape(weight_3d_k_p_r_, (n_k_p_r,)).to(dtype=torch.float32)/torch.maximum(torch.tensor(1e-12).to(dtype=torch.float32),k_p_r_); #%<-- this is inherited from weight_3d_k_p_r_, and can be overwritten if necessary. ;
     return (
         n_k_p_r,
         k_p_r_, 
         weight_3d_k_p_r_,
+        weight_2d_k_p_r_,
     ) ;

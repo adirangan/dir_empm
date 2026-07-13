@@ -16,7 +16,7 @@ k_p_r_max = 48.0/(2*pi); k_eq_d = 1.0/(2*pi); str_L = 'L';
     k_p_r_max,
     k_eq_d,
     str_L,
-);
+)[:3];
 #%%%%;
 n_w_int = 1;
 l_max_upb = matlab_scalar_round(2*pi*k_p_r_max);

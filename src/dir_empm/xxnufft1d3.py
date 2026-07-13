@@ -4,7 +4,7 @@ from finufft import nufft1d3 as nufft1d3_cpu
 def xxnufft1d3(
         nj,
         xj,
-        fc,
+        cj,
         iflag,
         eps,
         nk,
@@ -14,7 +14,7 @@ def xxnufft1d3(
     iflag_scalar = int(iflag) if np.isscalar(iflag) else int(iflag.item())
     return torch.tensor(nufft1d3_cpu(
         x=np.asarray(xj, dtype=np.float64),
-        f=np.asarray(fc, dtype=np.complex128),
+        c=np.asarray(cj, dtype=np.complex128),
         isign=iflag_scalar,
         eps=eps_scalar,
         s=np.asarray(sk, dtype=np.float64),

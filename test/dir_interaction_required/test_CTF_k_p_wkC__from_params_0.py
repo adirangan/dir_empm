@@ -20,7 +20,7 @@ k_p_r_max = k_int/(2*pi); k_eq_d = k_eq_d_double/(2*pi); str_T_vs_L = 'L';
     k_p_r_max,
     k_eq_d,
     str_T_vs_L,
-);
+)[:3];
 l_max_upb = matlab_scalar_round(2*pi*k_p_r_max);
 l_max_max = int(np.minimum(l_max_upb,1+np.ceil(2*pi*k_p_r_[-1].item())));
 n_w_max = int(n_w_int*2*(l_max_max+1)); n_w_0in_ = n_w_max*torch.ones(n_k_p_r).to(dtype=torch.int32);

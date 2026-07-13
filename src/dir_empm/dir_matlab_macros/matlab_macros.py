@@ -1,21 +1,24 @@
 #import os; os.chdir('/data/rangan/dir_cryoem/dir_rangan_python');
-import io ;
+import io ; import sys ;
 import numpy as np ; pi = np.pi ; i = 1j ; import torch ; import timeit ;
 from scipy.sparse import csr_matrix ;
 from scipy.io import savemat ;
 from scipy.io import loadmat ;
 
+linenumber_here = lambda : sys._getframe().f_back.f_lineno ;
 rng = lambda a : torch.manual_seed(a) ;
 cell = lambda n: [ [] for _ in range(n) ] ; #%<-- cell array. ;
 isempty = lambda t: (t is None) or (isinstance(t, torch.Tensor) and t.numel() == 0) ;
 numel_unique = lambda a : np.unique(a.numpy().ravel()).size ;
 numel = lambda a : int(a.numel()) ;
-max_0 = lambda a : int(torch.max(n_w_).item()) ;
-sum_0 = lambda a : int(torch.sum(n_w_).item()) ;
+max_0 = lambda a : torch.max(a).item() ;
+sum_0 = lambda a : torch.sum(a).item() ;
 cumsum_0 = lambda a : torch.cumsum(torch.concatenate((torch.tensor([0]),a)) , 0).to(torch.int32) ;
 fnorm = lambda a : torch.linalg.norm(a).item() ;
 ndims = lambda a : a.ndim ;
 size = lambda a , d : a.shape[ndims(a)-1-d] ;
+flipud = lambda a : torch.flip(a,(0,)) ; #<-- not necessarily matlab-equivalent (e.g., row-vectors). ;
+fliplr = lambda a : torch.flip(a,(1,)) ; #<-- not necessarily matlab-equivalent (e.g., row-vectors). ;
 mtr = lambda a : tuple(reversed(a)) ; #<-- matlab-arranged size (i.e., tuple(reversed(...))). ;
 msr = lambda str : str[::-1] ; #<-- for einsum (i.e., string reversed (...)). ;
 mts = lambda a : tuple(len(a) - x - 1 for x in a) ; #<-- for permute (i.e., tuple subtract (...)). ;
@@ -46,6 +49,7 @@ from . periodize import periodize ;
 from . disp_sprintf import disp ; from . disp_sprintf import sprintf ;
 from . fnorm_disp import fnorm_disp ;
 from . unique_0 import unique_0 ;
+from . unique_1 import unique_1 ;
 from . intersect_0 import intersect_0 ;
 from . union_0 import union_0 ;
 from . setdiff_0 import setdiff_0 ;
@@ -55,5 +59,8 @@ from . matlab_svds import matlab_svds ;
 from . matlab_save import matlab_save ;
 from . matlab_load import matlab_load ;
 from . matlab_assign_lhs_from_rhs_ import matlab_assign_lhs_from_rhs_ ;
+from . matlab_chebpts_0 import matlab_chebpts_0 ;
+from . matlab_chebpts_1 import matlab_chebpts_1 ;
+from . matlab_interp1_0 import matlab_interp1_0 ;
 
 
