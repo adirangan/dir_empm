@@ -62,5 +62,6 @@ from . matlab_assign_lhs_from_rhs_ import matlab_assign_lhs_from_rhs_ ;
 from . matlab_chebpts_0 import matlab_chebpts_0 ;
 from . matlab_chebpts_1 import matlab_chebpts_1 ;
 from . matlab_interp1_0 import matlab_interp1_0 ;
+from . matlab_interp2_0 import matlab_interp2_0 ;
 
 

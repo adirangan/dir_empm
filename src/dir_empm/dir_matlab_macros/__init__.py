@@ -68,6 +68,7 @@ __all__ = [
     "matlab_chebpts_0",
     "matlab_chebpts_1",
     "matlab_interp1_0",
+    "matlab_interp2_0",
 ];
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;

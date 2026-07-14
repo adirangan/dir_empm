@@ -159,14 +159,14 @@ def interp_x_c_to_k_p_xxnufft(
     if flag_u_vs_c==1:
         x_u_0_ = torch.linspace(-diameter_x0_c/2,+diameter_x0_c/2,n_x0+1).to(dtype=torch.float32)[:-1];
         x_u_1_ = torch.linspace(-diameter_x1_c/2,+diameter_x1_c/2,n_x1+1).to(dtype=torch.float32)[:-1];
-        x_u_0__,x_u_1__ = torch.meshgrid(x_u_1_,x_u_0_,indexing='ij'); #<-- reversed to match matlab. ;
+        x_u_1__,x_u_0__ = torch.meshgrid(x_u_1_,x_u_0_,indexing='ij'); #<-- reversed to match matlab. ;
         S_k_p_wk_ = xxnufft2d3(n_x0*n_x1,x_u_0__.ravel(),x_u_1__.ravel(),S_x_c_.ravel(),iflag,eps,n_w_sum,k0_wk_,k1_wk_)/max(1,np.sqrt(n_x0*n_x1));
     #end;%if flag_u_vs_c==1;
 
     if flag_u_vs_c==0:
         x_c_0_ = torch.linspace(-diameter_x0_c/2,+diameter_x0_c/2,n_x0).to(dtype=torch.float32);
         x_c_1_ = torch.linspace(-diameter_x1_c/2,+diameter_x1_c/2,n_x1).to(dtype=torch.float32);
-        x_c_0__,x_c_1__ = torch.meshgrid(x_c_1_,x_c_0_,indexing='ij'); #<-- reversed to match matlab. ;
+        x_c_1__,x_c_0__ = torch.meshgrid(x_c_1_,x_c_0_,indexing='ij'); #<-- reversed to match matlab. ;
         S_k_p_wk_ = xxnufft2d3(n_x0*n_x1,x_c_0__.ravel(),x_c_1__.ravel(),S_x_c_.ravel(),iflag,eps,n_w_sum,k0_wk_,k1_wk_)/max(1,np.sqrt(n_x0*n_x1));
     #end;%if flag_u_vs_c==0;
 

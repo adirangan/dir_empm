@@ -141,7 +141,7 @@ def interp_k_p_to_x_c_xxnufft(
     if flag_u_vs_c==1:
         x_u_0_ = torch.linspace(-diameter_x0_c/2,+diameter_x0_c/2,n_x0+1).to(dtype=torch.float32)[:-1];
         x_u_1_ = torch.linspace(-diameter_x1_c/2,+diameter_x1_c/2,n_x1+1).to(dtype=torch.float32)[:-1];
-        x_u_0__,x_u_1__ = torch.meshgrid(x_u_1_,x_u_0_,indexing='ij'); #<-- reversed to match matlab. ;
+        x_u_1__,x_u_0__ = torch.meshgrid(x_u_1_,x_u_0_,indexing='ij'); #<-- reversed to match matlab. ;
         S_x_u_ = xxnufft2d3(n_w_sum,k0_wk_,k1_wk_,S_k_p_wk_,+1,1e-12,n_x0*n_x1,x_u_0__.ravel(),x_u_1__.ravel())/max(1,np.sqrt(n_x0*n_x1))/max(1,n_w_sum);
         S_x_u_ = torch.reshape(S_x_u_,mtr((n_x0,n_x1)));
         S_x_g_ = S_x_u_;
@@ -150,7 +150,7 @@ def interp_k_p_to_x_c_xxnufft(
     if flag_u_vs_c==0:
         x_c_0_ = torch.linspace(-diameter_x0_c/2,+diameter_x0_c/2,n_x0).to(dtype=torch.float32);
         x_c_1_ = torch.linspace(-diameter_x1_c/2,+diameter_x1_c/2,n_x1).to(dtype=torch.float32);
-        x_c_0__,x_c_1__ = torch.meshgrid(x_c_1_,x_c_0_,indexing='ij'); #<-- reversed to match matlab. ;
+        x_c_1__,x_c_0__ = torch.meshgrid(x_c_1_,x_c_0_,indexing='ij'); #<-- reversed to match matlab. ;
         S_x_c_ = xxnufft2d3(n_w_sum,k0_wk_,k1_wk_,S_k_p_wk_,+1,1e-12,n_x0*n_x1,x_c_0__.ravel(),x_c_1__.ravel())/max(1,np.sqrt(n_x0*n_x1))/max(1,n_w_sum);
         S_x_c_ = torch.reshape(S_x_c_,mtr((n_x0,n_x1)));
         S_x_g_ = S_x_c_;
