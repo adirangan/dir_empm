@@ -10,13 +10,13 @@ def darray_printf_margin(
         str_prefix='',
         n_margin=3,
 ):
-    if (isempty(n_r) | isempty(n_c)):
+    if ((n_r is None) | (n_c is None)):
         n_r = 1; n_c = numel(d_);
     #end;%if (isempty(n_r) | isempty(n_c)):
-    if isempty(str_prefix): str_prefix = ''; #end;
-    if isempty(n_margin): n_margin = 3; #end;
+    if (str_prefix is None): str_prefix = ''; #end;
+    if (n_margin is None): n_margin = 3; #end;
 
-    n_mid = np.mininum((8+1)*n_c,(8+1)*(2*n_margin) + 4);
+    n_mid = np.minimum((8+1)*n_c,(8+1)*(2*n_margin) + 4);
     str_mid = '.'*(n_mid);
 
     nr=0; nc=0;
