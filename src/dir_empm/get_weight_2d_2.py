@@ -185,9 +185,9 @@ def get_weight_2d_2(
 
     if numel_unique(n_w_)==1:
         if (flag_verbose>0): disp(sprintf(' %% numel(unique(n_w_)): %d',numel_unique(n_w_))); #end;
-        k_c_0_wk__ = torch.zeros(mtr((n_w_max,n_k_p_r))).to(dtype=torch.float64);
-        k_c_1_wk__ = torch.zeros(mtr((n_w_max,n_k_p_r))).to(dtype=torch.float64);
-        gamma_z_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float64)/np.maximum(1,n_w_max);
+        k_c_0_wk__ = torch.zeros(mtr((n_w_max,n_k_p_r))).to(dtype=torch.float32);
+        k_c_1_wk__ = torch.zeros(mtr((n_w_max,n_k_p_r))).to(dtype=torch.float32);
+        gamma_z_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float32)/np.maximum(1,n_w_max);
         #k_c_0_wk__ = mmmm(torch.reshape(torch.cos(gamma_z_),mtr((n_w_max,1))),torch.reshape(k_p_r_,mtr((1,n_k_p_r))));
         #k_c_0_wk_ = k_c_0_wk__.ravel();
         #k_c_1_wk__ = mmmm(torch.reshape(torch.sin(gamma_z_),mtr((n_w_max,1))),torch.reshape(k_p_r_,mtr((1,n_k_p_r))));

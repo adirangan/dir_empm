@@ -20,7 +20,7 @@ __all__ = [
     "cumsum_0",
     "fnorm",
     "ndims",
-    "size",
+    "matlab_size",
     "flipud",
     "fliplr",
     "mtr",
@@ -69,6 +69,8 @@ __all__ = [
     "matlab_chebpts_1",
     "matlab_interp1_0",
     "matlab_interp2_0",
+    "darray_printf_margin",
+    "zarray_printf_margin",
 ];
 
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;

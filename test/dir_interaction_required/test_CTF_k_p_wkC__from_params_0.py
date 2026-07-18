@@ -3,8 +3,8 @@ from dir_empm.get_weight_3d_1 import get_weight_3d_1 ;
 from dir_empm.get_weight_2d_2 import get_weight_2d_2 ;
 from dir_empm.CTF_k_p_wkC__from_params_0 import CTF_k_p_wkC__from_params_0 ;
 
-flag_uniform_over_n_k_p_r = 0;
-flag_verbose=1; flag_disp=1; nf=0;
+flag_uniform_over_n_k_p_r = 1;
+flag_verbose=1; flag_disp=0; nf=0;
 str_thisfunction = 'CTF_k_p_wkC__from_params_0';
 if (flag_verbose>0): disp(sprintf(' %% testing %s',str_thisfunction)); #end;
 k_int = 48*2;

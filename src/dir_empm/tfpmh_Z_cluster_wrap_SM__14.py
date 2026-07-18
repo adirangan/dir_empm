@@ -126,10 +126,10 @@ def tfpmh_Z_cluster_wrap_SM__14(
     #%%%%%%%%;
     #% enforce CTF isotropy. ;
     #%%%%%%%%;
-    if (size(CTF_k_p_r_kC__,0)==n_w_sum):
+    if (matlab_size(CTF_k_p_r_kC__,0)==n_w_sum):
         CTF_k_p_wkC__ = CTF_k_p_r_kC__;
         CTF_k_p_r_kC__ = torch.reshape(torch.mean(torch.reshape(CTF_k_p_wkC__,mtr((n_w_max,n_k_p_r,n_CTF))),dim=2-0),mtr((n_k_p_r,n_CTF)));
-    #end;%if (size(CTF_k_p_r_kC__,1)==n_w_sum);
+    #end;%if (matlab_size(CTF_k_p_r_kC__,1)==n_w_sum);
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',n_CTF,index_nCTF_from_nM_);
     CTF_k_p_r_kM__ = torch.reshape(CTF_k_p_r_kC__.ravel()[tmp_i8_index_rhs_],mtr((n_k_p_r,n_M)));
 
@@ -142,7 +142,7 @@ def tfpmh_Z_cluster_wrap_SM__14(
             tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',n_M,index_nM_from_ncluster_);
             CTF_k_p_r_xavg_k_ = torch.mean(torch.reshape(CTF_k_p_r_kM__.ravel()[tmp_i8_index_rhs_],mtr((n_k_p_r,n_M_from_ncluster))),dim=1-1).ravel(); assert(numel(CTF_k_p_r_xavg_k_)==n_k_p_r);
             pm_n_UX_rank = int(pm_n_UX_rank_c_[ncluster].item()); pm_n_w_sum = n_w_max*pm_n_UX_rank;
-            tmp_i8_index_rhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
+            tmp_i8_index_rhs_ = matlab_index_3d_0(n_k_p_r,':',matlab_size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
             pm_UX_kn__ = torch.reshape(pm_UX_knc___.ravel()[tmp_i8_index_rhs_],mtr((n_k_p_r,pm_n_UX_rank)));
             tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',n_cluster,ncluster);
             pm_X_weight_r_ = pm_X_weight_rc__.ravel()[tmp_i8_index_rhs_]; assert(numel(pm_X_weight_r_)==n_k_p_r);

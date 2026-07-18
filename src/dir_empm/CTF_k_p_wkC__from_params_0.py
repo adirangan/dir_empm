@@ -17,12 +17,12 @@ def CTF_k_p_wkC__from_params_0(
 ):
 
     n_w_max = int(torch.max(n_w_).item()); n_w_sum = int(torch.sum(n_w_).item());
-    k_c_0_ = torch.zeros(n_w_sum).to(dtype=torch.float64);
-    k_c_1_ = torch.zeros(n_w_sum).to(dtype=torch.float64);
+    k_c_0_ = torch.zeros(n_w_sum).to(dtype=torch.float32);
+    k_c_1_ = torch.zeros(n_w_sum).to(dtype=torch.float32);
     if numel_unique(n_w_)==1:
-        k_c_0_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float64);
-        k_c_1_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float64);
-        gamma_z_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float64)/np.maximum(1,n_w_max);
+        k_c_0_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float32);
+        k_c_1_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float32);
+        gamma_z_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float32)/np.maximum(1,n_w_max);
         k_c_0_wk__ = mmmm(torch.reshape(torch.cos(gamma_z_),mtr((n_w_max,1))),torch.reshape(2*pi*k_p_r_,mtr((1,n_k_p_r))));
         k_c_0_wk_ = k_c_0_wk__.ravel();
         k_c_1_wk__ = mmmm(torch.reshape(torch.sin(gamma_z_),mtr((n_w_max,1))),torch.reshape(2*pi*k_p_r_,mtr((1,n_k_p_r))));
@@ -44,7 +44,7 @@ def CTF_k_p_wkC__from_params_0(
         if na != n_w_sum: print('Warning, na!=n_w_sum in CTF_k_p_wkC__from_params_0.py') ;
     #end;%if numel_unique(n_w_)>1:
 
-    CTF_k_p_wkC__ = torch.zeros(mtr((n_w_sum,n_CTF))).to(dtype=torch.float64);
+    CTF_k_p_wkC__ = torch.zeros(mtr((n_w_sum,n_CTF))).to(dtype=torch.float32);
     for nCTF in range(n_CTF):
         CTF_Spherical_Aberration = SphericalAberration_C_[nCTF];#% spherical aberration of the lens in mm ;
         CTF_Spherical_Aberration=CTF_Spherical_Aberration*(1.0e7);#% convert into Angstroms ;

@@ -73,11 +73,11 @@ def qbp_uniform_over_n_k_p_r_10(
     #%%%%%%%%;
     #% construct CTF of same size as images. ;
     #%%%%%%%%
-    n_CTF = size(CTF_k_p_wkC__,1);
-    if (size(CTF_k_p_wkC__,0)==n_k_p_r):
+    n_CTF = matlab_size(CTF_k_p_wkC__,1);
+    if (matlab_size(CTF_k_p_wkC__,0)==n_k_p_r):
         CTF_k_p_r_kC__ = CTF_k_p_wkC__;
         CTF_k_p_wkC__ = torch.reshape(torch.tile(torch.reshape(CTF_k_p_r_kC__,mtr((1,n_k_p_r,n_CTF))),mtr((n_w_max,1,1))),mtr((n_w_sum,n_CTF))).to(dtype=torch.float32);
-    #end;%if (size(CTF_k_p_wkC__,1)==n_k_p_r);
+    #end;%if (matlab_size(CTF_k_p_wkC__,1)==n_k_p_r);
     #%%%%%%%%;
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_w_sum,':',n_CTF,index_nCTF_from_nM_);
     CTF_k_p_wkM__ = torch.reshape(CTF_k_p_wkC__.ravel()[tmp_i8_index_rhs_],mtr((n_w_sum,n_M))).to(dtype=torch.float32);

@@ -7,5 +7,5 @@ def sprintf(format_str, *format_args):
     return(tmp_str.getvalue());
 
 def disp(input_str):
-    print(input_str);
+    print(input_str); #<-- appends newline. ;
 

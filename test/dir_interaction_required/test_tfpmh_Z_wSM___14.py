@@ -88,7 +88,7 @@ CTF_k_p_r_k_ = 0.5 + 1.0*torch.cos(2*pi*k_p_r_);
 if flag_speed_vs_error==0: pm_n_UX_rank = int(np.minimum(2,n_k_p_r-1)); #end; #%<-- should be accurate even when radial-compression is lossy. ;
 if flag_speed_vs_error==1: pm_n_UX_rank = 17; #end;
 tmp_UX_kn__,tmp_SX_k_,tmp_VX_kn__ = matlab_svds(X_kk__,pm_n_UX_rank);
-tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',size(tmp_UX_kn__,1),torch.arange(pm_n_UX_rank));
+tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',matlab_size(tmp_UX_kn__,1),torch.arange(pm_n_UX_rank));
 pm_UX_kn__ = torch.reshape(tmp_UX_kn__.ravel()[tmp_i8_index_rhs_],mtr((n_k_p_r,pm_n_UX_rank)));
 pm_X_weight_r_ = torch.sqrt(weight_2d_k_p_r_.ravel());
 #%%%%;

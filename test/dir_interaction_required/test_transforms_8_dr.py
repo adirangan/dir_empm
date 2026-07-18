@@ -265,7 +265,7 @@ delta_b_c_3s__ = torch.transpose(
         [ +1.2, -0.7 ]
     ]) / (2 * k_p_r_max) 
 , 1 , 0 ).to(torch.float32);
-n_source = size(delta_a_c_3s__,1);
+n_source = matlab_size(delta_a_c_3s__,1);
 a_k_p_form_ = torch.zeros(n_qk).to(dtype=torch.complex64);
 b_k_p_form_ = torch.zeros(n_qk).to(dtype=torch.complex64);
 for nsource in range(n_source):
@@ -1518,6 +1518,7 @@ def R2(gamma_z):
     R2__ = matlab_assign_lhs_from_rhs_(R2__,na, -np.sin(gamma_z)); na=na+1;
     R2__ = matlab_assign_lhs_from_rhs_(R2__,na, +np.cos(gamma_z)); na=na+1;
     assert(na==4);
+    R2__ = R2__.to(dtype=torch.float32);
     return(R2__);
 #end;def;
 
@@ -1543,6 +1544,7 @@ def Rz(azimu_b):
     Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                0); na=na+1;
     Rz__ = matlab_assign_lhs_from_rhs_(Rz__,na,                1); na=na+1;
     assert(na==9);
+    Rz__ = Rz__.to(dtype=torch.float32);
     return(Rz__);
 #end;def;
 
@@ -1568,6 +1570,7 @@ def Ry(polar_a):
     Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na,                0); na=na+1;
     Ry__ = matlab_assign_lhs_from_rhs_(Ry__,na, +np.cos(polar_a)); na=na+1;
     assert(na==9);
+    Ry__ = Ry__.to(dtype=torch.float32);
     return(Ry__);
 #end;def;
 

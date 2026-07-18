@@ -269,7 +269,7 @@ def tfpmh_Z_gpu_wSM___14(
             if flag_precompute_svd_V_UX_M_lwnM____==1:
                 if FTK['flag_tf_vs_bf']==1:
                     tmp_t = tic();
-                    tmp_i8_index_rhs_ = matlab_index_4d_0(n_svd_l,':',n_w_max,':',size(svd_V_UX_M_lwnM____,2),torch.arange(pm_n_UX_rank),n_M,index_nM_in_Mbatch_);
+                    tmp_i8_index_rhs_ = matlab_index_4d_0(n_svd_l,':',n_w_max,':',matlab_size(svd_V_UX_M_lwnM____,2),torch.arange(pm_n_UX_rank),n_M,index_nM_in_Mbatch_);
                     svd_V_UX_M_sub_gpu_lwnM____ = torch.reshape(svd_V_UX_M_lwnM____.ravel()[tmp_i8_index_rhs_],mtr((n_svd_l,n_w_max,pm_n_UX_rank,n_M_sub))).to(dtype=torch.complex64,device=device_use);
                     tmp_t = toc(tmp_t);
                     if (flag_verbose>1): disp(sprintf(' %% loading svd_V_UX_M_sub_gpu_lwnM____: %0.6fs',tmp_t)); #end;
@@ -277,7 +277,7 @@ def tfpmh_Z_gpu_wSM___14(
                 #end;%if FTK.flag_tf_vs_bf==1;
                 if FTK['flag_tf_vs_bf']==0:
                     tmp_t = tic();
-                    tmp_i8_index_rhs_ = matlab_index_4d_0(n_delta_v,':',n_w_max,':',size(svd_V_UX_M_lwnM____,2),torch.arange(pm_n_UX_rank),n_M,index_nM_in_Mbatch_);
+                    tmp_i8_index_rhs_ = matlab_index_4d_0(n_delta_v,':',n_w_max,':',matlab_size(svd_V_UX_M_lwnM____,2),torch.arange(pm_n_UX_rank),n_M,index_nM_in_Mbatch_);
                     svd_V_UX_M_sub_gpu_lwnM____ = torch.reshape(svd_V_UX_M_lwnM____.ravel()[tmp_i8_index_rhs_],mtr((n_delta_v,n_w_max,pm_n_UX_rank,n_M_sub))).to(dtype=torch.complex64,device=device_use);
                     tmp_t = toc(tmp_t);
                     if (flag_verbose>1): disp(sprintf(' %% loading UX_T_M_sub_k_q_gpu_dwnM____: %0.6fs',tmp_t)); #end;

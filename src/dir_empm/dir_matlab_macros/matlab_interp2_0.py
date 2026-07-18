@@ -13,6 +13,7 @@ def matlab_interp2_0(
         torch_x1_target_=None,
         torch_x0_target_=None,
         str_type='linear',
+        extrapval=0,
 ):
     #%%%%%%%%;
     #% Following to catch sequences which are not strictly monotone ;
@@ -50,7 +51,7 @@ def matlab_interp2_0(
     #end;%if (flag_verbose>0);
 
     torch_x1_sorted__,torch_x0_sorted__ = torch.meshgrid(torch_x1_sorted_,torch_x0_sorted_,indexing='ij'); #%<-- reversed to match matlab. ;
-    tmp_numpy_f = RegularGridInterpolator((torch_x0_sorted_.numpy(),torch_x1_sorted_.numpy()),torch_f_sorted_01__.T.numpy(),method='linear',bounds_error=False,fill_value=0);
+    tmp_numpy_f = RegularGridInterpolator((torch_x0_sorted_.numpy(),torch_x1_sorted_.numpy()),torch_f_sorted_01__.T.numpy(),method='linear',bounds_error=False,fill_value=extrapval);
     tmp_x_target_ = torch.row_stack((torch_x0_target_.T,torch_x1_target_.T)).T.to(dtype=torch.float32);
     torch_f_target_ = torch.tensor(tmp_numpy_f(tmp_x_target_.numpy()));
     return torch_f_target_ ;

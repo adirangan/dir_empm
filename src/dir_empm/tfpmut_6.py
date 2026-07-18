@@ -107,11 +107,11 @@ def tfpmut_6(
     #% construct CTF of same size as images. ;
     #%%%%%%%%
     tmp_t=tic();
-    if (size(CTF_k_p_wkC__,0)==n_k_p_r):
-        n_CTF = size(CTF_k_p_wkC__,1);
+    if (matlab_size(CTF_k_p_wkC__,0)==n_k_p_r):
+        n_CTF = matlab_size(CTF_k_p_wkC__,1);
         CTF_k_p_r_kC__ = CTF_k_p_wkC__;
         CTF_k_p_wkC__ = torch.reshape(torch.tile(torch.reshape(CTF_k_p_r_kC__,mtr((1,n_k_p_r,n_CTF))),mtr((n_w_max,n_1,n_1))),mtr((n_w_sum,n_CTF)));
-    #end;%if (size(CTF_k_p_wkC__,1+0)==n_k_p_r);
+    #end;%if (matlab_size(CTF_k_p_wkC__,1+0)==n_k_p_r);
     #%%%%%%%%;
     CTF_k_p_r_kC__ = torch.reshape(torch.mean(torch.reshape(CTF_k_p_wkC__,mtr((n_w_max,n_k_p_r,n_CTF))),2-0),mtr((n_k_p_r,n_CTF)));
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_w_sum,':',n_CTF,index_nCTF_from_nM_);

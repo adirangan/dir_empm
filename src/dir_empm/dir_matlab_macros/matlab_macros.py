@@ -16,7 +16,7 @@ sum_0 = lambda a : torch.sum(a).item() ;
 cumsum_0 = lambda a : torch.cumsum(torch.concatenate((torch.tensor([0]),a)) , 0).to(torch.int32) ;
 fnorm = lambda a : torch.linalg.norm(a).item() ;
 ndims = lambda a : a.ndim ;
-size = lambda a , d : a.shape[ndims(a)-1-d] ;
+matlab_size = lambda a , d : a.shape[ndims(a)-1-d] ;
 flipud = lambda a : torch.flip(a,(0,)) ; #<-- not necessarily matlab-equivalent (e.g., row-vectors). ;
 fliplr = lambda a : torch.flip(a,(1,)) ; #<-- not necessarily matlab-equivalent (e.g., row-vectors). ;
 mtr = lambda a : tuple(reversed(a)) ; #<-- matlab-arranged size (i.e., tuple(reversed(...))). ;
@@ -34,8 +34,8 @@ n_1 = int(1); n_2 = int(2); n_3 = int(3);
 n_byte_per_float32 = 4; n_byte_per_float64 = 8;
 n_byte_per_complex64 = 8; n_byte_per_complex128 = 16;
 np_sparse = lambda nr_,nc_,v_,n_r,n_c : csr_matrix( ( v_.numpy(),(nc_.numpy(),nr_.numpy()) ) , shape=(n_c,n_r) ) ; #<-- note matlab-arranged dimensions. ;
-m_npcsr_mm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(B.numpy().T).T),mtr((size(np_csr_A,0),size(B,1)))) ; #<-- note extra transposes to match matlab. ;
-m_npcsr_vm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(torch.reshape(B.ravel(),mtr((numel(B.ravel()),1))).numpy().T).T),mtr((size(np_csr_A,0),n_1))).ravel() ; #<-- note extra transposes to match matlab. ;
+m_npcsr_mm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(B.numpy().T).T),mtr((matlab_size(np_csr_A,0),matlab_size(B,1)))) ; #<-- note extra transposes to match matlab. ;
+m_npcsr_vm = lambda np_csr_A,B : torch.reshape(torch.tensor(np_csr_A.T.dot(torch.reshape(B.ravel(),mtr((numel(B.ravel()),1))).numpy().T).T),mtr((matlab_size(np_csr_A,0),n_1))).ravel() ; #<-- note extra transposes to match matlab. ;
 diag = lambda A : torch.diagflat(A) ; #<-- matlab diag. ;
 
 from . matlab_index_2d_0 import matlab_index_2d_0 ;
@@ -63,5 +63,8 @@ from . matlab_chebpts_0 import matlab_chebpts_0 ;
 from . matlab_chebpts_1 import matlab_chebpts_1 ;
 from . matlab_interp1_0 import matlab_interp1_0 ;
 from . matlab_interp2_0 import matlab_interp2_0 ;
+from . darray_printf_margin import darray_printf_margin ;
+from . zarray_printf_margin import zarray_printf_margin ;
+
 
 

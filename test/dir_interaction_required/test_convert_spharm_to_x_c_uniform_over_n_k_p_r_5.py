@@ -90,7 +90,7 @@ delta_b_c_3s__ = torch.transpose(
         [ +1.2, -0.7 ]
     ]) / (2 * k_p_r_max) 
 , 1 , 0 ).to(torch.float32);
-n_source = size(delta_a_c_3s__,1);
+n_source = matlab_size(delta_a_c_3s__,1);
 a_k_p_form_ = torch.zeros(n_qk).to(dtype=torch.complex64);
 b_k_p_form_ = torch.zeros(n_qk).to(dtype=torch.complex64);
 for nsource in range(n_source):

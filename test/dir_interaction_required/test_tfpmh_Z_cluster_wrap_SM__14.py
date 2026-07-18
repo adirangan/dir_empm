@@ -315,8 +315,8 @@ for ncluster in range(n_cluster):
         tmp_M_k_p_wkM__,
     );
     tmp_UX_kn__,tmp_SX_k_,tmp_VX_kn__ = matlab_svds(X_kk__,pm_n_UX_rank);
-    assert(size(tmp_UX_kn__,0)==n_k_p_r); assert(size(tmp_UX_kn__,1)==pm_n_UX_rank);
-    tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
+    assert(matlab_size(tmp_UX_kn__,0)==n_k_p_r); assert(matlab_size(tmp_UX_kn__,1)==pm_n_UX_rank);
+    tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',matlab_size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',pm_n_UX_rank,torch.arange(pm_n_UX_rank));
     #pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
     pm_UX_knc___ = matlab_assign_lhs_from_rhs_(pm_UX_knc___,tmp_i8_index_lhs_, tmp_UX_kn__.ravel()[tmp_i8_index_rhs_]);
@@ -488,8 +488,8 @@ for ncluster in range(n_cluster):
         tmp_M_k_p_wkM__,
     );
     tmp_UX_kn__,tmp_SX_k_,tmp_VX_kn__ = matlab_svds(X_kk__,pm_n_UX_rank);
-    assert(size(tmp_UX_kn__,0)==n_k_p_r); assert(size(tmp_UX_kn__,1)==pm_n_UX_rank);
-    tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
+    assert(matlab_size(tmp_UX_kn__,0)==n_k_p_r); assert(matlab_size(tmp_UX_kn__,1)==pm_n_UX_rank);
+    tmp_i8_index_lhs_ = matlab_index_3d_0(n_k_p_r,':',matlab_size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
     tmp_i8_index_rhs_ = matlab_index_2d_0(n_k_p_r,':',pm_n_UX_rank,torch.arange(pm_n_UX_rank));
     #pm_UX_knc___.ravel()[tmp_i8_index_lhs_] = tmp_UX_kn__.ravel()[tmp_i8_index_rhs_];
     pm_UX_knc___ = matlab_assign_lhs_from_rhs_(pm_UX_knc___,tmp_i8_index_lhs_, tmp_UX_kn__.ravel()[tmp_i8_index_rhs_]);
@@ -553,7 +553,7 @@ for nS in range(n_S):
         M_k_p_wk_ = M_k_p_wkM__[nM,:].ravel();
         ncluster = int(index_ncluster_from_nM_[nM].item());
         pm_n_UX_rank = int(pm_n_UX_rank_c_[ncluster].item()); pm_n_w_max = n_w_max; pm_n_w_sum = pm_n_w_max*pm_n_UX_rank;
-        tmp_i8_index_rhs_ = matlab_index_3d_0(n_k_p_r,':',size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
+        tmp_i8_index_rhs_ = matlab_index_3d_0(n_k_p_r,':',matlab_size(pm_UX_knc___,1),torch.arange(pm_n_UX_rank),n_cluster,ncluster);
         pm_UX_kn__ = torch.reshape(pm_UX_knc___.ravel()[tmp_i8_index_rhs_],mtr((n_k_p_r,pm_n_UX_rank)));
         pm_X_weight_r_ = pm_X_weight_rc__[ncluster,:].ravel();
         pm_wUX_kn__ = torch.reshape(pm_X_weight_r_,mtr((n_k_p_r,1))) * pm_UX_kn__ ;

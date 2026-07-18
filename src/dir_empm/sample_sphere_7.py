@@ -199,8 +199,8 @@ if (flag_verbose>2); disp(sprintf(' %% [finished sample_sphere_7]')); end;
 '''
 def sample_sphere_7(
         flag_verbose, 
-        k_p_r_max: np.float64 = 48 / (2 * pi), 
-        k_eq_d: np.float64 = 1.0/ (2 * pi), 
+        k_p_r_max: np.float32 = 48 / (2 * pi), 
+        k_eq_d: np.float32 = 1.0/ (2 * pi), 
         str_T_vs_L: str = 'L', 
         flag_uniform_over_n_k_p_r: int = 0, 
         flag_uniform_over_polar_a: int = 0,

@@ -107,7 +107,7 @@ for nsource in range(n_source):
     tmp_x_0 = tmp_r*np.sin(tmp_a)*np.cos(tmp_b); tmp_x_1 = tmp_r*np.sin(tmp_a)*np.sin(tmp_b); tmp_x_2 = tmp_r*np.cos(tmp_a);
     delta_a_c_3s__[nsource,:] = torch.tensor([tmp_x_0,tmp_x_1,tmp_x_2]).to(dtype=torch.float32);
 #end;%for nsource=0:n_source-1;
-n_source = size(delta_a_c_3s__,1);
+n_source = matlab_size(delta_a_c_3s__,1);
 a_k_p_form_qk_ = torch.zeros(n_qk).to(dtype=torch.complex64);
 for nsource in range(n_source):
     delta_a_c_ = delta_a_c_3s__[nsource,:].ravel();

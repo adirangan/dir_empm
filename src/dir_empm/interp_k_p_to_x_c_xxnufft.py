@@ -116,9 +116,9 @@ def interp_k_p_to_x_c_xxnufft(
 
     n_w_max = int(torch.max(n_w_).item()); n_w_sum = int(torch.sum(n_w_).item());
     if numel_unique(n_w_)==1:
-        k0_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float64);
-        k1_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float64);
-        omega_w_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float64)/np.maximum(1,n_w_max);
+        k0_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float32);
+        k1_wk__ = torch.zeros(mtr((n_w_sum,n_k_p_r))).to(dtype=torch.float32);
+        omega_w_ = 2*pi*torch.arange(n_w_max).to(dtype=torch.float32)/np.maximum(1,n_w_max);
         k0_wk__ = mmmm(torch.reshape(torch.cos(omega_w_),mtr((n_w_max,1))),torch.reshape(2*pi*k_p_r_,mtr((1,n_k_p_r))));
         k0_wk_ = k0_wk__.ravel();
         k1_wk__ = mmmm(torch.reshape(torch.sin(omega_w_),mtr((n_w_max,1))),torch.reshape(2*pi*k_p_r_,mtr((1,n_k_p_r))));
