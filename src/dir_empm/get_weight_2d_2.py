@@ -131,35 +131,36 @@ def get_weight_2d_2(
         n_w_0in_=None,
         weight_3d_k_p_r_=None,
 ):
+    str_thisfunction = 'get_weight_2d_2';
 
-    if flag_verbose is None: flag_verbose = 0 ;
+    if flag_verbose is None: flag_verbose = 0 ; #end;
 
-    if flag_verbose > 0: print(f" %% [entering get_weight_2d_2]") ;
+    if (flag_verbose>0): disp(sprintf(' %%: [entering %s]',str_thisfunction)); #end;
 
     flag_calc = 0;
-    if n_k_p_r is None or k_p_r_ is None or weight_3d_k_p_r_ is None: flag_calc = 1 ;
+    if n_k_p_r is None or k_p_r_ is None or weight_3d_k_p_r_ is None: flag_calc = 1 ; #end;
 
-    if flag_calc: print(f" %% Warning, precomputation required") ;
+    if flag_calc: disp(sprintf(' %% Warning, precomputation required in %s',str_thisfunction)); #end;
 
-    if template_k_eq_d is None: template_k_eq_d = -1 ;
+    if template_k_eq_d is None: template_k_eq_d = -1 ; #end;
     if n_w_0in_ is None:
-        if flag_verbose > 0: print(f" %% calculating n_w_0in_") ;
+        if (flag_verbose> 0): print(f" %% calculating n_w_0in_") ; #end;
         l_max_upb = matlab_scalar_round(2 * pi * k_p_r_max) ;
         n_w_max = 2 * (l_max_upb + 1) ;
         n_w_0in_ = n_w_max * torch.ones(n_k_p_r).to(dtype=torch.int32) ;
     #end;%if;
 
-    n_w_ = torch.zeros(n_k_p_r).to(dtype=torch.int32)
+    n_w_ = torch.zeros(n_k_p_r).to(dtype=torch.int32) ;
     if template_k_eq_d > 0:
-        if flag_verbose > 0:
-            print(f" %% template_k_eq_d > 0")
+        if (flag_verbose> 0): disp(sprintf(' %% template_k_eq_d> 0')); #end;
         for nk_p_r in range(n_k_p_r):
             k_p_r = k_p_r_[nk_p_r].item() ;
             n_equator = 3 + matlab_scalar_round(2 * pi * k_p_r / template_k_eq_d) ;
             n_polar_a = 3 + matlab_scalar_round(n_equator / 2) ;
             n_w_[nk_p_r] = 2 * n_polar_a ;
+        #end;%for nk_p_r=0:n_k_p_r-1;
     else:
-        if flag_verbose > 0: print(f" %% template_k_eq_d <= 0") ;
+        if (flag_verbose> 0): print(f" %% template_k_eq_d <= 0") ; #end;
         n_w_ = n_w_0in_.detach().clone() ;
         assert numel(n_w_) == n_k_p_r and torch.min(n_w_) > 0 ;
     #end;%ifelse;
@@ -168,7 +169,7 @@ def get_weight_2d_2(
     n_w_sum = int(torch.sum(n_w_).item()) ;
     n_w_csum_ = cumsum_0(n_w_);
 
-    if flag_verbose > 0: print(f" %% n_w_max {n_w_max} n_w_sum {n_w_sum}") ;
+    if (flag_verbose> 0): disp(sprintf(' %% n_w_max %d n_w_sum %d',n_w_max,n_w_sum)); #end;
 
     weight_2d_k_p_r_ = 2 * pi * torch.reshape(weight_3d_k_p_r_, (n_k_p_r,)) / torch.maximum(torch.tensor([1e-12]),k_p_r_) ; weight_2d_k_p_r_ = weight_2d_k_p_r_.to(dtype=torch.float32);
 
@@ -176,7 +177,7 @@ def get_weight_2d_2(
     for nk_p_r in range(n_k_p_r):
         tmp_index_ = int(n_w_csum_[nk_p_r].item()) + torch.arange(int(n_w_[nk_p_r].item()),dtype=torch.int32) ;
         weight_2d_k_p_wk_[tmp_index_] = weight_2d_k_p_r_[nk_p_r].item() / max(1,int(n_w_[nk_p_r].item())) / (2 * pi) ** 2 ;
-    #end;%for;
+    #end;%for nk_p_r=0:n_k_p_r-1;
 
     k_c_0_wk_ = torch.zeros(n_w_sum).to(dtype=torch.float32);
     k_c_1_wk_ = torch.zeros(n_w_sum).to(dtype=torch.float32);
@@ -218,7 +219,7 @@ def get_weight_2d_2(
         #end;%for;
     #end;%if numel_unique(n_w_)> 1:
 
-    if flag_verbose > 0: print(f" %% [finished get_weight_2d_2]") ;
+    if (flag_verbose>0): disp(sprintf(' %%: [finished %s]',str_thisfunction)); #end;
 
     return (
         n_w_,

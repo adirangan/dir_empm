@@ -5,6 +5,7 @@ mtr = lambda a : tuple(reversed(a)) ; #<-- matlab-arranged size (i.e., tuple(rev
 from . disp_sprintf import disp ; from . disp_sprintf import sprintf ;
 from . unique_1 import unique_1 ;
 from . matlab_index_2d_0 import matlab_index_2d_0 ;
+from . matlab_assign_lhs_from_rhs_ import matlab_assign_lhs_from_rhs_ ;
 
 def matlab_interp2_0(
         torch_x1_source_=None,
@@ -52,7 +53,18 @@ def matlab_interp2_0(
 
     torch_x1_sorted__,torch_x0_sorted__ = torch.meshgrid(torch_x1_sorted_,torch_x0_sorted_,indexing='ij'); #%<-- reversed to match matlab. ;
     tmp_numpy_f = RegularGridInterpolator((torch_x0_sorted_.numpy(),torch_x1_sorted_.numpy()),torch_f_sorted_01__.T.numpy(),method='linear',bounds_error=False,fill_value=extrapval);
-    tmp_x_target_ = torch.row_stack((torch_x0_target_.T,torch_x1_target_.T)).T.to(dtype=torch.float32);
+    n_x0_target = numel(torch_x0_target_);
+    n_x1_target = numel(torch_x1_target_);
+    #torch_x0_target_ = torch.reshape(torch_x0_target_,mtr((n_x0_target,1)));
+    #torch_x1_target_ = torch.reshape(torch_x1_target_,mtr((n_x1_target,1)));
+    #tmp_x_target_ = torch.row_stack((torch_x0_target_.T,torch_x1_target_.T)).T.to(dtype=torch.float32); #<-- deprecated for some reason? ;
+    n_2 = 2;
+    tmp_x_target_2t__ = torch.zeros(mtr((n_2,n_x0_target))).to(dtype=torch.float32);
+    tmp_i8_index_lhs_ = matlab_index_2d_0(n_2,0,n_x0_target,':');
+    tmp_x_target_2t__ = matlab_assign_lhs_from_rhs_(tmp_x_target_2t__,tmp_i8_index_lhs_,torch_x0_target_);
+    tmp_i8_index_lhs_ = matlab_index_2d_0(n_2,1,n_x0_target,':');
+    tmp_x_target_2t__ = matlab_assign_lhs_from_rhs_(tmp_x_target_2t__,tmp_i8_index_lhs_,torch_x1_target_);
+    tmp_x_target_ = tmp_x_target_2t__.ravel();
     torch_f_target_ = torch.tensor(tmp_numpy_f(tmp_x_target_.numpy()));
     return torch_f_target_ ;
         
