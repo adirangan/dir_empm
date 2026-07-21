@@ -259,3 +259,6 @@ tmp_M_x_u_reco_l2 = torch.sum(torch.abs(tmp_M_x_u_reco_)**2).item()*dx_u**2;
 disp(sprintf(' %% tmp_M_x_u_reco_l2 = %0.16f',tmp_M_x_u_reco_l2));
 fnorm_disp(flag_verbose,'tmp_M_x_u_form_',tmp_M_x_u_form_,'tmp_M_x_u_reco_',tmp_M_x_u_reco_,'%<-- should be moderate (since cartesian quadrature is not good)');
 
+#%%%%%%%%;
+disp(sprintf(' %% returning after %s at line %d',str_thisfunction,linenumber_here())); exit(0);
+#%%%%%%%%;
