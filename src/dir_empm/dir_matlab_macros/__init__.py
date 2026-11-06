@@ -1,6 +1,7 @@
 #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;
 
 __all__ = [
+    "Path",
     "np",
     "pi",
     "i",
@@ -9,6 +10,7 @@ __all__ = [
     "csr_matrix",
     "savemat",
     "loadmat",
+    "strcmp",
     "linenumber_here",
     "rng",
     "cell",

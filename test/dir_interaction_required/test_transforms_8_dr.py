@@ -2055,6 +2055,10 @@ fnorm_disp(flag_verbose,'CTF_R_S_l2_w_qua2_',CTF_R_S_l2_w_qua2_,'CTF_R_S_l2_w_fo
 fnorm_disp(flag_verbose,'CTF_R_S_l2_w_quad_',CTF_R_S_l2_w_quad_,'CTF_R_S_l2_w_form_',CTF_R_S_l2_w_form_,' %%<-- should be <1e-6');
 #%%%%%%%%;
 dir_base = '/data/rangan' ;
+string_root_ = Path.cwd().parts[1];
+if not strcmp(string_root_,'data'):
+    dir_base_new = sprintf('/%s/rangan',string_root_); disp(sprintf(' %% Warning, %s not found, switching to %s',dir_base,dir_base_new)); dir_base = dir_base_new;
+#end;%if not strcmp(string_root_,'data'):
 dir_ascii = dir_base + '/dir_cryoem/dir_rangan_python/dir_ascii' ;
 fname_ascii = dir_ascii + '/CTF_R_S_l2_w_quad_.ascii' ;
 print(f" %% writing {fname_ascii}");
@@ -2302,6 +2306,10 @@ for nCTF in range(n_CTF):
 del nCTF;
 #%%%%%%%%%%%%%%%%;
 dir_base = '/data/rangan' ;
+string_root_ = Path.cwd().parts[1];
+if not strcmp(string_root_,'data'):
+    dir_base_new = sprintf('/%s/rangan',string_root_); disp(sprintf(' %% Warning, %s not found, switching to %s',dir_base,dir_base_new)); dir_base = dir_base_new;
+#end;%if not strcmp(string_root_,'data'):
 dir_ascii = dir_base + '/dir_cryoem/dir_rangan_python/dir_ascii' ;
 fname_ascii = dir_ascii + '/UX_T_M_l2_dM__.ascii' ;
 print(f" %% writing {fname_ascii}");
@@ -2549,6 +2557,10 @@ fnorm_disp(flag_verbose,'Z_d_form_',Z_d_form_,'Z_d_quad_',Z_d_quad_,' %%<-- shou
 #%%%%%%%%;
 
 dir_base = '/data/rangan' ;
+string_root_ = Path.cwd().parts[1];
+if not strcmp(string_root_,'data'):
+    dir_base_new = sprintf('/%s/rangan',string_root_); disp(sprintf(' %% Warning, %s not found, switching to %s',dir_base,dir_base_new)); dir_base = dir_base_new;
+#end;%if not strcmp(string_root_,'data'):
 dir_ascii = dir_base + '/dir_cryoem/dir_rangan_python/dir_ascii' ;
 fname_ascii = dir_ascii + '/Z_d_quad_.ascii' ;
 print(f" %% writing {fname_ascii}");
