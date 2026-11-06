@@ -273,7 +273,7 @@ def pm_template_3(
             if (flag_verbose>0): disp(sprintf(' %% spherical_harmonic_unphased_wakm____: (%d,%d,%d,%d)=%d (%0.2f GB)',n_w,n_viewing_polar_a,n_k_sub,1+2*l_max,n_w*n_viewing_polar_a*n_k_sub*(1+2*l_max),n_w*n_viewing_polar_a*n_k_sub*(1+2*l_max)*8/1e9)); #end;
             str_einsum = msr('lwam') + ',' + msr('lkm') + '->' + msr('wakm') ;
             spherical_harmonic_unphased_wakm____ = torch.reshape(torch.einsum( str_einsum , legendre_evaluate_normalized_lwam____.to(dtype=torch.complex64) , tmp_a_k_Y_lkm___.to(dtype=torch.complex64) ),mtr((n_w,n_viewing_polar_a,n_k_sub,1+2*l_max)));
-            spherical_harmonic_unphased_mkwa____ = torch.permute(spherical_harmonic_unphased_wakm____,mtr(mts((3,2,0,1))));
+            spherical_harmonic_unphased_mkwa____ = torch.permute(spherical_harmonic_unphased_wakm____,mtr(mts((3,2,0,1)))).contiguous();
             if (flag_verbose>0): disp(sprintf(' %% spherical_harmonic_unphased_mkwa____: (%d,%d,%d,%d)=%d (%0.2f GB)',(1+2*l_max),n_k_sub,n_w,n_viewing_polar_a,(1+2*l_max)*n_k_sub*n_w*n_viewing_polar_a,(1+2*l_max)*n_k_sub*n_w*n_viewing_polar_a*8/1e9)); #end;
             tmp_t = toc(tmp_t);
             if (flag_verbose>1): disp(sprintf(' %% spherical_harmonic_unphased_mkwa____: %0.6fs',tmp_t)); #end;
@@ -288,7 +288,7 @@ def pm_template_3(
 #                str_einsum = msr('lb') + ',' + msr('la') + '->' + msr('ba') ; #<-- symbol 'b' is the multi-index 'wp'. ;
 #                spherical_harmonic_unphased_wakm____.ravel()[tmp_i8_index_lhs_wakm_] = torch.einsum( str_einsum , torch.reshape(legendre_evaluate_normalized_lwam___.to(dtype=torch.complex64).ravel()[tmp_i8_index_rhs_lwam_],mtr((1+l_max,n_w*n_viewing_polar_a))) , torch.reshape(tmp_a_k_Y_lkm___.ravel()[tmp_i8_index_rhs_lkm_],mtr((1+l_max,n_k_sub))) ).ravel() ;
 #            #end;%for nm=0:n_m_max-1;
-#            spherical_harmonic_unphased_mkwa____ = torch.permute(spherical_harmonic_unphased_wakm____,mtr(mts((3,2,0,1))));
+#            spherical_harmonic_unphased_mkwa____ = torch.permute(spherical_harmonic_unphased_wakm____,mtr(mts((3,2,0,1)))).contiguous();
 #            if (flag_verbose>0):
 #                disp(sprintf(' %% spherical_harmonic_unphased_mkwa____: (%d,%d,%d,%d)=%d (%0.2f GB)',(1+2*l_max),n_k_sub,n_w,n_viewing_polar_a,(1+2*l_max)*n_k_sub*n_w*n_viewing_polar_a,(1+2*l_max)*n_k_sub*n_w*n_viewing_polar_a*8/1e9)); #end;
 #            tmp_t = toc(tmp_t);

@@ -226,7 +226,7 @@ def tfpmh_Z_gpu_wSM___14(
     UX_T_M_l2_gpu_dM__ = UX_T_M_l2_dM__.to(device=device_use);
     UX_M_l2_gpu_M_ = UX_M_l2_M_.to(device=device_use);
     UX_CTF_S_l2_gpu_S_ = UX_CTF_S_l2_S_.to(device=device_use);
-    UX_CTF_S_k_q_nSw___ = torch.permute(torch.reshape(UX_CTF_S_k_q_wnS__,mtr((pm_n_w_max,pm_n_k_p_r,n_S))),mtr(mts((1,2,0))));
+    UX_CTF_S_k_q_nSw___ = torch.permute(torch.reshape(UX_CTF_S_k_q_wnS__,mtr((pm_n_w_max,pm_n_k_p_r,n_S))),mtr(mts((1,2,0)))).contiguous();
 
     #%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%;
     for nMbatch in range(n_Mbatch):
