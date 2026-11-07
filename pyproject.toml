@@ -25,6 +25,7 @@ dependencies = [
     "pydantic",
     "tqdm",
     "matplotlib",
+    "pyqt6>=6.12.0",
 ]
 
 [dependency-groups]
