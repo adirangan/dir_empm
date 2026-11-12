@@ -44,7 +44,7 @@ def principled_marching_cost_matrix_7(
     l_max_max = int(torch.max(l_max_).item());
     m_max_ = torch.arange(-l_max_max,+l_max_max+1).to(dtype=torch.int32);
     n_m_max = 1+2*l_max_max;
-    n_polar_a = n_m_max; polar_a_ = torch.linspace(-pi,pi,n_polar_a+1).to(dtype=torch.float32); polar_a_ = polar_a_[0:n_polar_a].ravel();
+    n_polar_a = n_m_max; polar_a_ = matlab_linspace(-pi,pi,n_polar_a+1,dtype=torch.float32); polar_a_ = polar_a_[0:n_polar_a].ravel();
     weight_so3 = (2*pi)*(2*pi)*4; #%<-- total volume of so3. ;
     a_k_Y_ykv__ = torch.reshape(a_k_Y_ykv__,mtr((n_y_sum,n_molecule))).to(dtype=torch.complex64); #<-- if n_molecule==1. ;
     a_k_Y_ykv___ = torch.zeros(mtr((n_y_max,n_k_p_r,n_molecule))).to(dtype=torch.complex64);

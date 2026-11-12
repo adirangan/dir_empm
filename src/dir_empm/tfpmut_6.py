@@ -119,7 +119,7 @@ def tfpmut_6(
     #%%%%%%%%;
     #% then calculate average CTFs for each cluster. ;
     #%%%%%%%%;
-    CTF_k_p_r_xavg_kc__ = torch.zeros(mtr((n_k_p_r,n_cluster)));
+    CTF_k_p_r_xavg_kc__ = torch.zeros(mtr((n_k_p_r,n_cluster))).to(dtype=torch.float32);
     for ncluster in range(n_cluster):
         index_nM_from_ncluster_ = index_nM_from_ncluster__[ncluster];
         n_index_nM_from_ncluster = int(n_index_nM_from_ncluster_[ncluster].item());
@@ -136,7 +136,7 @@ def tfpmut_6(
         tmp_t = tic();
         r8_delta_r_max = float(delta_r_max);
         r8_svd_eps = float(svd_eps);
-        parameter_FTK = parameter;
+        parameter_FTK = parameter.copy(); #<-- note copy. ;
         parameter_FTK['r8_delta_r_max'] = r8_delta_r_max;
         parameter_FTK['r8_svd_eps'] = r8_svd_eps;
         parameter_FTK['n_delta_v_requested'] = n_delta_v_requested;
@@ -624,8 +624,8 @@ def tfpmut_6(
         image_delta_x_tot_M_ = image_delta_x_acc_M_ + image_delta_x_upd_M_;
         image_delta_y_tot_M_ = image_delta_y_acc_M_ + image_delta_y_upd_M_;
         image_delta_r_tot_M_ = torch.sqrt(image_delta_x_tot_M_**2 + image_delta_y_tot_M_**2);
-        image_delta_x_nrm_M_ = image_delta_x_tot_M_;
-        image_delta_y_nrm_M_ = image_delta_y_tot_M_;
+        image_delta_x_nrm_M_ = image_delta_x_tot_M_.detach().clone(); #<-- note copy. ;
+        image_delta_y_nrm_M_ = image_delta_y_tot_M_.detach().clone(); #<-- note copy. ;
         tmp_index_ = efind(image_delta_r_tot_M_> delta_r_upb);
         if (numel(tmp_index_)> 0):
             if (flag_verbose>0): disp(sprintf(' %% %% normalizing %d/%d image displacements',numel(tmp_index_),n_M)); #end;
