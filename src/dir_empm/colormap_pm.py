@@ -38,7 +38,7 @@ def colormap_pm(
     c_3c__[0:m1 - 1, 2] = 1;
     m2 = (n_c + 1) // 2;
     c_3c__[m2 - 1, :] = [1, 1, 1];
-    tmp_ = np.linspace(1, 0, n_c - m2) ** gamma2;
+    tmp_ = matlab_linspace(1, 0, n_c - m2,dtype=torch.float64) ** gamma2;
     c_3c__[m2:, 0] = 1;
     c_3c__[m2:, 1] = tmp_ ** 6;
     c_3c__[m2:, 2] = 0.5 + 0.5 * tmp_;

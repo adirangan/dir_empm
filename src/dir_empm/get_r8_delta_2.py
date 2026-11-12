@@ -19,8 +19,8 @@ def get_r8_delta_2(
     if n_delta_v_0in> 1:
         n_x = int(1 + np.floor(np.sqrt(n_delta_v_0in))); continue_flag=1;
         while continue_flag:
-            r8_x_ = torch.linspace(-r8_delta_r_max,+r8_delta_r_max,n_x).to(dtype=torch.float64);
-            r8_y_ = torch.linspace(-r8_delta_r_max,+r8_delta_r_max,n_x).to(dtype=torch.float64);
+            r8_x_ = matlab_linspace(-r8_delta_r_max,+r8_delta_r_max,n_x,dtype=torch.float64);
+            r8_y_ = matlab_linspace(-r8_delta_r_max,+r8_delta_r_max,n_x,dtype=torch.float64);
             [r8_Y__,r8_X__] = torch.meshgrid(r8_y_,r8_x_,indexing='ij'); #%<-- reversed to match matlab. ;
             R__ = torch.sqrt(r8_X__**2 + r8_Y__**2);
             tmp_index_ = efind(R__.ravel()<=r8_delta_r_max+tolerance_margin);
