@@ -27,7 +27,7 @@ def interp_q_to_p(
             n_w_max = int(n_w_[n_r-1].item());
             ic=0;
             for nr in range(n_r):
-                n_w = int(n_w_[nr]).item();
+                n_w = int(n_w_[nr].item());
                 if (n_w>0):
                     tmp_index_ = int(ic) + torch.arange(n_w).to(dtype=torch.int32);
                     S_p_[tmp_index_] = torch.tensor(np.fft.ifft(S_q_[tmp_index_].numpy())*np.maximum(0,np.sqrt(n_w))).to(dtype=torch.complex64);
