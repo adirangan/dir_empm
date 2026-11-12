@@ -39,32 +39,11 @@ def matlab_index_size_(A,n_d):
 #%%%%%%%%;
 
 #%%%%%%%%;
-def matlab_index_nd_(n_d,args,axis_fn):
+def matlab_index_args_(n_d,args):
     # Here we allow for two different calling sequences. ;
     # A: args is (n_0,index_n0_,n_1,index_n1_,...) or ;
     # B: args is (A,index_n0_,index_n1_,...). ;
     # A and B are differentiated by the total number of arguments. ;
-    args = list(args);
-    if len(args)==n_d+1 and torch.is_tensor(args[0]) and args[0].ndim>=1:
-        n_ = matlab_index_size_(args[0],n_d); index__ = args[1:];
-    else:
-        if len(args)> 2*n_d: raise ValueError('matlab_index_nd_ called with too many arguments'); #end;
-        args = args + [None]*(2*n_d-len(args));
-        n_ = args[0::2]; index__ = args[1::2];
-    #end;%if;
-    index_ = None; stride = 1;
-    for nd in range(n_d):
-        tmp_shape_ = [1]*n_d; tmp_shape_[n_d-1-nd] = -1; #<-- nd 0 should vary fastest. ;
-        tmp_ = axis_fn(n_[nd],index__[nd]).reshape(tmp_shape_);
-        index_ = tmp_*stride if index_ is None else index_ + tmp_*stride;
-        stride = stride*n_[nd];
-    #end;%for nd=0:n_d-1;
-    return(index_.ravel());
-#%%%%%%%%;
-
-#%%%%%%%%;
-def matlab_index_args_(n_d,args):
-    # similar to matlab_index_nd_. ;
     if len(args)==n_d+1 and torch.is_tensor(args[0]) and args[0].ndim>=1:
         n_ = matlab_index_size_(args[0],n_d);
         return([x for n,index_ in zip(n_,args[1:]) for x in (n,index_)]);
