@@ -1,9 +1,15 @@
 from dir_empm.dir_matlab_macros import * ;
 from dir_empm.tfpmut_wrap_6 import tfpmut_wrap_6 ;
 
+dir_base = '/data/rangan' ;
+string_root = Path.cwd().parts[1];
+if not strcmp(string_root,'data'):
+    dir_base_new = sprintf('/%s/rangan',string_root); disp(sprintf(' %% Warning, %s not found, switching to %s',dir_base,dir_base_new)); dir_base = dir_base_new;
+#end;%if not strcmp(string_root,'data'):
+
 #%%%%;
 flag_verbose=1;
-tmp_dir_base = '/data/rangan/dir_cryoem';
+tmp_dir_base = sprintf('/%s/rangan/dir_cryoem',string_root);
 tmp_dir_tfpm_mat = sprintf('%s/dir_trpv1_x0/dir_tfpm_mat',tmp_dir_base);
 tmp_fname_mat = sprintf('%s/test_tfpmut_wrap_6_a1t0014p15r1.mat',tmp_dir_tfpm_mat);
 #%%%%;
@@ -34,7 +40,7 @@ parameter['rseed']=0;
 parameter['tolerance_pm']=0.100000000000000;
 parameter['delta_r_max']=0.017631663493955;
 parameter['delta_r_upb']=0.141053307951639;
-parameter['dir_tfpm ']= '/data/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm';
+parameter['dir_tfpm ']= sprintf('/%s/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm',string_root);
 parameter['flag_alternate_MS_vs_SM']=1;
 parameter['flag_force_create_mat']=0;
 parameter['flag_force_create_tmp']=1;
@@ -58,7 +64,7 @@ parameter['n_iteration']=32;
 #%%%%%%%%;
 XA_parameter = parameter;
 XA_parameter['flag_gpu']=1;
-XA_parameter['fname_pre']='/data/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm_mat/test_tfpmut_wrap_6_XA_from_python';
+XA_parameter['fname_pre']=sprintf('/%s/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm_mat/test_tfpmut_wrap_6_XA_from_python',string_root);
 tmp_t=tic();
 XA_parameter = tfpmut_wrap_6(
     XA_parameter,
@@ -82,7 +88,7 @@ if (flag_verbose>1): disp(sprintf(' %% tfpmut_wrap_6: time %0.2fs',tmp_t)); end;
 #%%%%%%%%;
 XB_parameter = parameter;
 XB_parameter['flag_gpu']=1;
-XB_parameter['fname_pre']='/data/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm_mat/test_tfpmut_wrap_6_XB_from_python';
+XB_parameter['fname_pre']=sprintf('/%s/rangan/dir_cryoem/dir_trpv1_x0/dir_tfpm_mat/test_tfpmut_wrap_6_XB_from_python',string_root);
 tmp_t=tic();
 XB_parameter = tfpmut_wrap_6(
     XB_parameter,

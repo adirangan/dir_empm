@@ -7,7 +7,7 @@ def matlab_save(
         fname_mat=None,
         dictionary_original=None,
 ):
-    dictionary_reversed = dictionary_original;
+    dictionary_reversed = dict(dictionary_original); #<-- here we force a copy to be made. ;
     for key in dictionary_original:
         if isinstance(dictionary_reversed[key],torch.Tensor):
             dictionary_reversed[key] = etumrep(dictionary_original[key]);
