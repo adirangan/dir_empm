@@ -13,4 +13,4 @@ def matlab_pagemtimes(A, *args):
     if A.ndim<2: A = torch.reshape(A,(1,)+tuple(A.shape)) ; #<-- for column-vectors to be n-by-1. ;
     if B.ndim<2: B = torch.reshape(B,(1,)+tuple(B.shape)) ; #<-- for column-vectors to be n-by-1. ;
     tmp_dtype = torch.promote_types(A.dtype,B.dtype);
-    return torch.matmul(fun_transp(B.to(dtype=tmp_dtype),transp_B), fun_transp(A.to(dtype=tmp_dtype),transp_A)) ; #<-- similar to pagemtimes. ;
+    return torch.matmul(fun_transp(B.to(dtype=tmp_dtype),str_transp_B), fun_transp(A.to(dtype=tmp_dtype),str_transp_A)) ; #<-- similar to pagemtimes. ;
