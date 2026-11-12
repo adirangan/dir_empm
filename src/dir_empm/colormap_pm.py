@@ -23,12 +23,15 @@ c__(m2+1:end,2) = transpose(tmp_).^6;
 c__(m2+1:end,3) = 0.5 + 0.5*transpose(tmp_);
 output = c__;
 '''
-def colormap_pm(n_c=64):
+def colormap_pm(
+        n_c=None,
+):
+    if isempty(n_c): n_c = 64; #end;
     gamma1 = 0.5;
     gamma2 = 0.25;
-    c_3c__ = np.zeros((n_c, 3));
+    c_3c__ = np.zeros(mtr((3,n_c)));
     m1 = n_c // 2;
-    c_3c__[m1, :] = [1, 1, 1];
+    c_3c__[m1-1, :] = [1, 1, 1];
     tmp_ = np.linspace(0, 1, m1 - 1) ** gamma1;
     c_3c__[0:m1 - 1, 0] = tmp_ ** 6;
     c_3c__[0:m1 - 1, 1] = 0.5 + 0.5 * tmp_;
