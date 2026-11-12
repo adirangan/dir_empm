@@ -40,7 +40,7 @@ def colormap_beach(
     c_3c__[:m1-1,0] = tmp_**6;
     c_3c__[:m1-1,1] = 0.5 + 0.5*tmp_;
     c_3c__[:m1-1,2] = torch.ones(m1-1).to(dtype=torch.float64);
-    m2 = int(np.ceil((n_c+1)/2));
+    m2 = int(np.ceil((n_c+0)/2));
     c_3c__[m2-1,:] = torch.tensor([1,1,1]).to(dtype=torch.float64);
     tmp_ = matlab_linspace(1,0,n_c-m2,dtype=torch.float64)**gamma2;
     c_3c__[m2:,0] = torch.ones(n_c-m2).to(dtype=torch.float64);
