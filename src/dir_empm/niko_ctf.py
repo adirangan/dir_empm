@@ -39,7 +39,7 @@ def niko_ctf(
     rad_ = l_**2 + m_**2; rad_ = torch.sqrt(rad_);
     angle_ = rad_*thetatr;
     angspt_ = torch.atan2(m_,l_);
-    c1_ = 2.0*pi * angle_*angle_ / (2.0*var_lambda);
+    c1_ = 2.0*pi * angle_*angle_ / np.maximum(1e-32,2.0*var_lambda);
     c2_ = -c1_ * Cs * angle_*angle_ / 2.0;
     angdif_ = angspt_ - angast;
     ccos_ = torch.cos(2.0*angdif_);
