@@ -55,6 +55,7 @@ def tfpmut_wrap_6(
     if 'rank_pm' not in parameter: parameter['rank_pm'] = 10; #end; %<-- parameter_bookmark. ;
     rank_pm = parameter['rank_pm'];
     if 'rank_CTF' not in parameter:
+        n_w_ = n_w_[:n_k_p_r].ravel(); n_w_sum = int(torch.sum(n_w_).item());
         tmp_i8_index_rhs_ = matlab_index_2d_0(n_w_sum,':',n_CTF,index_nCTF_from_nM_);
         _,SCTF_,_ = matlab_svds(torch.reshape(CTF_k_p_wkC__.ravel()[tmp_i8_index_rhs_],mtr((n_w_sum,n_M))),int(np.minimum(n_w_sum,n_M)));
         rank_CTF = 1+int(torch.max(efind(SCTF_/np.maximum(tolerance_machine,torch.max(SCTF_).item())>tolerance_master)).item());
